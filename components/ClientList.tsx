@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { Search, Edit2, Trash2, AlertTriangle, FileText, MessageCircle } from 'lucide-react';
+import { Search, Edit2, Trash2, AlertTriangle, FileText, MessageCircle, FolderOpen, X, Eye, Download } from 'lucide-react';
 import { NeonInput } from './ui/Input';
-import { ClientData } from '../types';
+import { ClientData, SavedDocument } from '../types';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -15,6 +15,9 @@ interface ClientListProps {
 export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelete }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  
+  // Estado para o Modal de Documentos
+  const [viewingDocsClient, setViewingDocsClient] = useState<ClientData | null>(null);
 
   const filteredClients = clients.filter(client => 
     client.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -27,6 +30,41 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
       onDelete(deleteConfirmId);
       setDeleteConfirmId(null);
     }
+  };
+
+  // --- Helper: Data URL to Blob URL (para abrir em nova aba) ---
+  const getBlobUrl = (base64Data: string) => {
+      try {
+        const parts = base64Data.split(',');
+        const mime = parts[0].match(/:(.*?);/)?.[1] || 'application/octet-stream';
+        const bstr = atob(parts[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        const blob = new Blob([u8arr], {type: mime});
+        return URL.createObjectURL(blob);
+      } catch (e) {
+          console.error("Erro ao converter arquivo", e);
+          return '';
+      }
+  };
+
+  const handleViewFile = (doc: SavedDocument) => {
+      const url = getBlobUrl(doc.data);
+      if (url) window.open(url, '_blank');
+  };
+
+  const handleDownloadFile = (doc: SavedDocument) => {
+      const url = getBlobUrl(doc.data);
+      if (url) {
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = doc.name;
+          a.click();
+          URL.revokeObjectURL(url);
+      }
   };
 
   // --- WhatsApp Logic ---
@@ -210,6 +248,54 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
         </div>
       )}
 
+      {/* Modal de Documentos (Arquivos) */}
+      {viewingDocsClient && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4" onClick={() => setViewingDocsClient(null)}>
+          <div className="bg-dark-900 border border-neon-900 rounded-lg shadow-neon max-w-2xl w-full max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
+             <div className="flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 className="text-lg font-bold text-neon-400 flex items-center gap-2">
+                    <FolderOpen size={20} /> Arquivos: {viewingDocsClient.fullName}
+                </h3>
+                <button onClick={() => setViewingDocsClient(null)} className="text-gray-500 hover:text-white"><X size={20}/></button>
+             </div>
+             <div className="p-4 flex-1 overflow-y-auto custom-scrollbar">
+                {!viewingDocsClient.documents || viewingDocsClient.documents.length === 0 ? (
+                    <div className="text-center py-10 text-gray-500 italic">
+                        Nenhum arquivo anexado para este cliente.
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {viewingDocsClient.documents.map((doc, idx) => (
+                            <div key={idx} className="bg-black border border-gray-800 rounded p-3 flex items-center justify-between group hover:border-neon-500 transition-colors">
+                                <div className="flex items-center gap-3 overflow-hidden">
+                                    <div className="p-2 bg-gray-900 rounded text-neon-400">
+                                        <FileText size={18} />
+                                    </div>
+                                    <div className="flex flex-col min-w-0">
+                                        <span className="text-xs font-bold text-gray-200 truncate" title={doc.name}>{doc.name}</span>
+                                        <span className="text-[10px] text-gray-500 uppercase">{doc.categoryId}</span>
+                                    </div>
+                                </div>
+                                <div className="flex gap-1 shrink-0">
+                                    <button onClick={() => handleViewFile(doc)} className="p-1.5 rounded hover:bg-blue-900/30 text-gray-500 hover:text-blue-400 transition-colors" title="Visualizar">
+                                        <Eye size={16} />
+                                    </button>
+                                    <button onClick={() => handleDownloadFile(doc)} className="p-1.5 rounded hover:bg-green-900/30 text-gray-500 hover:text-green-400 transition-colors" title="Baixar">
+                                        <Download size={16} />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+             </div>
+             <div className="p-3 border-t border-gray-800 bg-black/30 text-center">
+                 <p className="text-[10px] text-gray-500">Clique no olho para visualizar ou na seta para baixar.</p>
+             </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-4 gap-4 bg-dark-950 p-2 rounded border border-gray-900">
         <h2 className="text-lg font-bold text-neon-400 flex items-center gap-2 px-2">
           Clientes <span className="bg-neon-900/30 text-neon-500 px-2 py-0.5 rounded-full text-xs border border-neon-900/50">{clients.length}</span>
@@ -272,6 +358,9 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
                     </td>
                     <td className="px-4 py-2.5 text-right">
                       <div className="flex justify-end gap-1">
+                        <button onClick={(e) => { e.stopPropagation(); setViewingDocsClient(client); }} className="p-1.5 rounded bg-dark-900 hover:bg-yellow-900/20 text-gray-500 hover:text-yellow-500 border border-transparent hover:border-yellow-900 transition-all" title="Arquivos">
+                          <FolderOpen size={14} />
+                        </button>
                         <button onClick={(e) => handleWhatsApp(e, client)} className="p-1.5 rounded bg-dark-900 hover:bg-green-900/20 text-gray-500 hover:text-green-500 border border-transparent hover:border-green-900 transition-all" title="WhatsApp">
                           <MessageCircle size={14} />
                         </button>

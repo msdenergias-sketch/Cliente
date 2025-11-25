@@ -68,8 +68,8 @@ const DocUploadCard: React.FC<DocUploadCardProps> = ({ id, title, icon: Icon, fi
   return (
     <div className="bg-dark-900 border border-gray-800 rounded p-2 flex flex-col h-full hover:border-neon-900 transition-colors">
       <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2 text-neon-400 font-bold text-xs uppercase"><Icon size={14} /> {title}</div>
-        <div className="flex gap-1">
+        <div className="flex items-center gap-2 text-neon-400 font-bold text-[10px] uppercase truncate" title={title}><Icon size={14} /> {title}</div>
+        <div className="flex gap-1 shrink-0">
             <button onClick={() => fileInputRef.current?.click()} className="p-1.5 bg-gray-800 rounded hover:bg-neon-900/50 hover:text-neon-400 transition-colors text-gray-400" title="Upload"><Upload size={14} /></button>
             <button onClick={() => camInputRef.current?.click()} className="p-1.5 bg-gray-800 rounded hover:bg-neon-900/50 hover:text-neon-400 transition-colors text-gray-400" title="Câmera"><Camera size={14} /></button>
         </div>
@@ -462,6 +462,20 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
     return "";
   };
 
+  // Definição da lista de documentos da concessionária com a ordem e títulos exatos
+  const concessionaireDocsList = [
+      { id: 'art', title: 'ART / TRT OBRA / SERVIÇO (Assinado)' },
+      { id: 'locationMap', title: 'LOCALIZAÇÃO da instalação' },
+      { id: 'diagram', title: 'Diagrama Unifilar' },
+      { id: 'annex1', title: 'ANEXO I' },
+      { id: 'memorial', title: 'Memorial Técnico Descritivo' },
+      { id: 'holderDoc', title: 'DOC. TITULAR' },
+      { id: 'powerOfAttorney', title: 'Procuração Autenticada' },
+      { id: 'inverterCert', title: 'Certificado do Inversor' },
+      { id: 'techRespDoc', title: 'Documento do Responsável Técnico' },
+      { id: 'othersConc', title: 'Outros' }
+  ];
+
   return (
     <div className="w-full h-full flex flex-col animate-fadeIn">
       {previewFile && <FilePreviewModal file={previewFile} onClose={() => setPreviewFile(null)} />}
@@ -582,14 +596,24 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {activeStep === 'initial-docs' ? (
                   <>
-                    <DocUploadCard id="identification" title="Identificação" icon={User} files={docs['identification']} onUpload={(f) => handleFileUpload('identification', f)} onRemove={(id) => removeFile('identification', id)} onPreview={handlePreview} onDownload={handleDownload} />
+                    <DocUploadCard id="identification" title="Doc. Identificação" icon={User} files={docs['identification']} onUpload={(f) => handleFileUpload('identification', f)} onRemove={(id) => removeFile('identification', id)} onPreview={handlePreview} onDownload={handleDownload} />
                     <DocUploadCard id="energyBill" title="Fatura Energia" icon={Zap} files={docs['energyBill']} onUpload={(f) => handleFileUpload('energyBill', f)} onRemove={(id) => removeFile('energyBill', id)} onPreview={handlePreview} onDownload={handleDownload} />
                     <DocUploadCard id="signedContract" title="Contrato Assinado" icon={FileSignature} files={docs['signedContract'] || []} onUpload={(f) => handleFileUpload('signedContract', f)} onRemove={(id) => removeFile('signedContract', id)} onPreview={handlePreview} onDownload={handleDownload} />
                     <DocUploadCard id="other" title="Outros" icon={FileText} files={docs['other']} onUpload={(f) => handleFileUpload('other', f)} onRemove={(id) => removeFile('other', id)} onPreview={handlePreview} onDownload={handleDownload} />
                   </>
               ) : (
-                  ['art', 'locationMap', 'diagram', 'annex1', 'memorial', 'holderDoc', 'powerOfAttorney', 'inverterCert'].map(id => (
-                      <DocUploadCard key={id} id={id} title={id.toUpperCase()} icon={FileText} files={docs[id] || []} onUpload={(f) => handleFileUpload(id, f)} onRemove={(fid) => removeFile(id, fid)} onPreview={handlePreview} onDownload={handleDownload} />
+                  concessionaireDocsList.map(docItem => (
+                      <DocUploadCard 
+                        key={docItem.id} 
+                        id={docItem.id} 
+                        title={docItem.title} 
+                        icon={FileText} 
+                        files={docs[docItem.id] || []} 
+                        onUpload={(f) => handleFileUpload(docItem.id, f)} 
+                        onRemove={(fid) => removeFile(docItem.id, fid)} 
+                        onPreview={handlePreview} 
+                        onDownload={handleDownload} 
+                      />
                   ))
               )}
            </div>
