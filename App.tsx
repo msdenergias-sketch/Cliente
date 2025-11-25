@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tab, ClientData, FinancialTransaction, SystemMeta } from './types';
 import { ClientRegistration } from './components/ClientRegistration';
 import { ClientList } from './components/ClientList';
 import { FinancialControl } from './components/FinancialControl';
 import { SystemSettings } from './components/SystemSettings';
-import { LayoutDashboard, Users, UserPlus, Settings, AlertTriangle } from 'lucide-react';
+import { LayoutDashboard, Users, UserPlus, Settings, AlertTriangle, Zap } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('client-list');
@@ -107,99 +106,94 @@ const App: React.FC = () => {
   };
 
   const navItems = [
-    { id: 'new-client' as Tab, label: clientToEdit ? 'Editando Cliente' : 'Novo Cliente', icon: <UserPlus size={20} /> },
-    { id: 'client-list' as Tab, label: 'Lista de Clientes', icon: <Users size={20} /> },
-    { id: 'financial' as Tab, label: 'Controle Financeiro', icon: <LayoutDashboard size={20} /> },
-    { id: 'settings' as Tab, label: 'Configurações', icon: <Settings size={20} />, alert: isBackupOutdated() },
+    { id: 'new-client' as Tab, label: clientToEdit ? 'Editando' : 'Novo Cliente', icon: <UserPlus size={18} /> },
+    { id: 'client-list' as Tab, label: 'Clientes', icon: <Users size={18} /> },
+    { id: 'financial' as Tab, label: 'Financeiro', icon: <LayoutDashboard size={18} /> },
+    { id: 'settings' as Tab, label: 'Configurações', icon: <Settings size={18} />, alert: isBackupOutdated() },
   ];
 
   return (
-    <div className="h-screen bg-black text-gray-200 font-sans selection:bg-neon-500 selection:text-black flex flex-col overflow-hidden">
-      {/* Header Compacto */}
-      <header className="px-8 py-4 border-b border-gray-900 bg-black/95 flex flex-col md:flex-row justify-between items-center gap-6 z-10 shrink-0">
-        <div className="flex flex-col items-center md:items-start">
-          <h1 className="text-3xl font-extrabold text-neon-500 tracking-tight drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]">
-            Sistema de Gestão
+    <div className="h-screen bg-black text-gray-300 font-sans selection:bg-neon-500 selection:text-black flex flex-col overflow-hidden">
+      {/* Header Ultra Compacto */}
+      <header className="h-14 border-b border-gray-900 bg-black flex items-center justify-between px-4 shrink-0 z-20">
+        <div className="flex items-center gap-2">
+          <Zap size={20} className="text-neon-500 fill-neon-500" />
+          <h1 className="text-lg font-bold text-white tracking-tight">
+            Sistema<span className="text-neon-500">Gestão</span>
           </h1>
-          <p className="text-gray-400 text-sm font-medium tracking-wide">
-            Gerencie seus clientes e finanças
-          </p>
         </div>
 
         {/* Navigation Compacta */}
-        <nav className="flex gap-3 overflow-x-auto max-w-full pb-1 md:pb-0 scrollbar-hide">
+        <nav className="flex gap-1">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleTabChange(item.id)}
               className={`
-                flex items-center gap-2 px-5 py-3 rounded-xl text-base font-bold transition-all duration-300 whitespace-nowrap relative
+                flex items-center gap-2 px-3 py-1.5 rounded text-sm font-medium transition-all duration-200 relative
                 ${activeTab === item.id 
-                  ? 'bg-gradient-to-r from-neon-500 to-neon-400 text-black shadow-neon ring-1 ring-neon-400 scale-105' 
-                  : 'bg-dark-900 text-gray-400 border border-gray-800 hover:border-neon-900 hover:text-white hover:bg-dark-800'}
+                  ? 'bg-neon-900/20 text-neon-400 border border-neon-900/50 shadow-[0_0_10px_rgba(34,197,94,0.1)]' 
+                  : 'text-gray-500 hover:text-gray-200 hover:bg-gray-900'}
               `}
             >
               {item.icon}
-              {item.label}
+              <span className="hidden md:inline">{item.label}</span>
               {item.alert && (
-                <span className="absolute top-0 right-0 -mt-1 -mr-1 w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-black" title="Backup necessário"></span>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
               )}
             </button>
           ))}
         </nav>
+        
+        <div className="flex items-center gap-2 text-[10px] text-gray-600 font-mono">
+            <span className="w-1.5 h-1.5 rounded-full bg-neon-500 animate-pulse"></span> v1.0.1
+        </div>
       </header>
 
-      {/* Main Content Area - Scrollable */}
-      <main className="flex-1 overflow-hidden p-6 relative">
-        <div className="bg-dark-950 rounded-2xl border border-gray-900/50 w-full h-full overflow-y-auto custom-scrollbar p-4 md:p-8 shadow-inner">
-          {activeTab === 'new-client' && (
-            <ClientRegistration 
-              onSave={handleSaveClient} 
-              initialData={clientToEdit}
-              onCancel={() => {
-                setClientToEdit(null);
-                setActiveTab('client-list');
-              }}
-            />
-          )}
-          
-          {activeTab === 'client-list' && (
-            <ClientList 
-              clients={clients} 
-              onEdit={handleEditClick} 
-              onDelete={handleDeleteClick} 
-            />
-          )}
-          
-          {activeTab === 'financial' && (
-            <FinancialControl 
-              clients={clients} 
-              transactions={transactions}
-              onAddTransaction={handleAddTransaction}
-              onDeleteTransaction={handleDeleteTransaction}
-            />
-          )}
+      {/* Main Content Area - Maximized */}
+      <main className="flex-1 overflow-hidden bg-dark-950 relative">
+        <div className="w-full h-full overflow-hidden p-2">
+          <div className="w-full h-full bg-black/40 rounded border border-gray-900 overflow-y-auto custom-scrollbar p-3">
+            {activeTab === 'new-client' && (
+              <ClientRegistration 
+                onSave={handleSaveClient} 
+                initialData={clientToEdit}
+                onCancel={() => {
+                  setClientToEdit(null);
+                  setActiveTab('client-list');
+                }}
+              />
+            )}
+            
+            {activeTab === 'client-list' && (
+              <ClientList 
+                clients={clients} 
+                onEdit={handleEditClick} 
+                onDelete={handleDeleteClick} 
+              />
+            )}
+            
+            {activeTab === 'financial' && (
+              <FinancialControl 
+                clients={clients} 
+                transactions={transactions}
+                onAddTransaction={handleAddTransaction}
+                onDeleteTransaction={handleDeleteTransaction}
+              />
+            )}
 
-          {activeTab === 'settings' && (
-            <SystemSettings 
-              clients={clients} 
-              transactions={transactions}
-              onRestore={handleRestoreData}
-              lastBackupDate={systemMeta.lastBackupDate}
-              onBackupComplete={handleBackupComplete}
-            />
-          )}
+            {activeTab === 'settings' && (
+              <SystemSettings 
+                clients={clients} 
+                transactions={transactions}
+                onRestore={handleRestoreData}
+                lastBackupDate={systemMeta.lastBackupDate}
+                onBackupComplete={handleBackupComplete}
+              />
+            )}
+          </div>
         </div>
       </main>
-      
-      {/* Footer Compacto */}
-      <footer className="shrink-0 bg-dark-900 border-t border-gray-800 py-2 px-6 text-xs text-gray-500 flex justify-between items-center z-10 font-medium">
-        <span>Sistema v1.0.1</span>
-        <span className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-neon-500 animate-pulse"></span>
-          Online
-        </span>
-      </footer>
     </div>
   );
 };
