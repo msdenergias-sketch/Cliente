@@ -1,4 +1,5 @@
-export type Tab = 'new-client' | 'client-list' | 'financial';
+
+export type Tab = 'new-client' | 'client-list' | 'financial' | 'settings';
 
 export type FormStep = 
   | 'personal-data' 
@@ -6,6 +7,23 @@ export type FormStep =
   | 'initial-docs' 
   | 'concessionaire-docs' 
   | 'projects';
+
+export interface FinancialTransaction {
+  id: string;
+  description: string;
+  type: 'income' | 'expense';
+  amount: string; // Format: R$ 0,00
+  date: string;
+  category: string; // Ex: 'Combustível', 'Laudo', etc.
+}
+
+export interface SavedDocument {
+  id: string;
+  categoryId: string; // identification, energyBill, etc.
+  name: string;
+  type: 'image' | 'pdf';
+  data: string; // Base64 string
+}
 
 export interface ClientData {
   id: string; // Unique ID
@@ -40,6 +58,18 @@ export interface ClientData {
   utmZone: string;
   utmEasting: string;
   utmNorthing: string;
+  // Project & Financial
+  projectStatus?: string;
+  installDate?: string;
+  equipmentList?: string;
+  contractValue?: string; // Format: R$ 0.000,00
+  projectCost?: string;   // Format: R$ 0.000,00
+  // Documents
+  documents?: SavedDocument[];
+}
+
+export interface SystemMeta {
+  lastBackupDate: string | null;
 }
 
 // Enum for select inputs
