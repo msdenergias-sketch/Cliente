@@ -289,6 +289,57 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Lista Completa de Concessionárias (RS First)
+  const concessionaireOptions = [
+    // --- Rio Grande do Sul (Prioridade) ---
+    'RGE Sul',
+    'CEEE Equatorial',
+    'Coprel',
+    'Certel',
+    'Ceriluz',
+    'Cerfox',
+    'Creral',
+    'Certaja',
+    'Castro Dis',
+    'Hidropan',
+    'Muxfeldt',
+    'Nova Palma',
+    'Eletrocar',
+    'Demei',
+    // --- Outras Nacionais ---
+    'Amazonas Energia',
+    'Celesc',
+    'Cemig',
+    'Coelba (Neoenergia)',
+    'Copel',
+    'Cosern (Neoenergia)',
+    'CPFL Paulista',
+    'CPFL Piratininga',
+    'CPFL Santa Cruz',
+    'EDP Espírito Santo',
+    'EDP São Paulo',
+    'Elektro (Neoenergia)',
+    'Enel Ceará',
+    'Enel Goiás',
+    'Enel Rio',
+    'Enel São Paulo',
+    'Energisa (Diversos Estados)',
+    'Energisa Mato Grosso',
+    'Energisa Mato Grosso do Sul',
+    'Energisa Paraíba',
+    'Energisa Sergipe',
+    'Energisa Tocantins',
+    'Equatorial Alagoas',
+    'Equatorial Maranhão',
+    'Equatorial Pará',
+    'Equatorial Piauí',
+    'Light',
+    'Neoenergia Brasília',
+    'Neoenergia Pernambuco',
+    'Roraima Energia',
+    'Sulgipe'
+  ];
+
   // Helper: Convert Base64 to File object to restore visuals
   const base64ToFile = (dataurl: string, filename: string): File => {
     try {
@@ -870,7 +921,7 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
              <div className="w-full"><NeonInput label="Ponto de Referência (Opcional)" name="reference" placeholder="Ex: Próximo ao supermercado, em frente à praça..." value={formData.reference} onChange={handleChange} /></div>
             <div className="h-px bg-gradient-to-r from-transparent via-neon-900 to-transparent my-6"></div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <NeonSelect label="Concessionária" name="concessionaire" options={['Enel', 'Cemig', 'CPFL', 'Light', 'Neoenergia', 'Equatorial']} value={formData.concessionaire} onChange={handleChange} />
+                <NeonSelect label="Concessionária" name="concessionaire" options={concessionaireOptions} value={formData.concessionaire} onChange={handleChange} />
                  <NeonInput label="UC" name="uc" placeholder="Unidade Consumidora" value={formData.uc} onChange={handleChange} />
                  <NeonSelect label="Tipo de Instalação" name="installType" options={['Residencial', 'Comercial', 'Industrial', 'Rural']} value={formData.installType} onChange={handleChange} />
                  <NeonInput label="Cons. Med. Mensal (kWh)" name="avgConsumption" type="number" placeholder="0" value={formData.avgConsumption} onChange={handleChange} />
