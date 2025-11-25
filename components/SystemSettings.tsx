@@ -1,7 +1,6 @@
-
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { ClientData, FinancialTransaction } from '../types';
-import { Download, Upload, Database, AlertTriangle, CheckCircle, Save, RotateCcw, Clock } from 'lucide-react';
+import { Download, Upload, Database, AlertTriangle, CheckCircle, Save, RotateCcw, Clock, HardDrive } from 'lucide-react';
 
 interface SystemSettingsProps {
   clients: ClientData[];
@@ -30,6 +29,33 @@ export const SystemSettings: React.FC<SystemSettingsProps> = ({
       stats: { newC: number, conflictC: number, newT: number }
   } | null>(null);
 
+  // State for Storage Monitor
+  const [storageUsage, setStorageUsage] = useState<{ used: number, total: number, percent: number }>({ used: 0, total: 5 * 1024 * 1024, percent: 0 });
+
+  useEffect(() => {
+    calculateStorage();
+  }, [clients, transactions]);
+
+  const calculateStorage = () => {
+    let totalUsed = 0;
+    for (let key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        totalUsed += ((localStorage[key].length + key.length) * 2); // UTF-16 = 2 bytes
+      }
+    }
+    // Estimating 5MB limit (standard for browsers)
+    const limit = 5 * 1024 * 1024; 
+    const percent = (totalUsed / limit) * 100;
+    setStorageUsage({ used: totalUsed, total: limit, percent });
+  };
+
+  const formatBytes = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
 
   // --- Função de Backup (Exportar) ---
   const handleBackup = () => {
@@ -166,6 +192,12 @@ export const SystemSettings: React.FC<SystemSettingsProps> = ({
     return daysDiff > 7;
   };
 
+  const getStorageColor = () => {
+      if (storageUsage.percent > 80) return 'bg-red-500';
+      if (storageUsage.percent > 50) return 'bg-yellow-500';
+      return 'bg-neon-500';
+  };
+
   return (
     <div className="w-full h-full flex flex-col animate-fadeIn overflow-y-auto custom-scrollbar pr-1 relative">
       <h2 className="text-xl font-bold text-neon-400 mb-6 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)] flex items-center gap-2">
@@ -181,20 +213,46 @@ export const SystemSettings: React.FC<SystemSettingsProps> = ({
         </div>
       )}
 
-      {/* Status de Backup */}
-      <div className={`mb-8 p-4 rounded-lg border flex items-center justify-between ${isBackupOld() ? 'bg-yellow-900/10 border-yellow-700/50' : 'bg-dark-900 border-gray-800'}`}>
-         <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-full ${isBackupOld() ? 'bg-yellow-900/30 text-yellow-500' : 'bg-green-900/30 text-green-500'}`}>
-                <Clock size={24} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        {/* Status de Backup */}
+        <div className={`p-4 rounded-lg border flex items-center justify-between ${isBackupOld() ? 'bg-yellow-900/10 border-yellow-700/50' : 'bg-dark-900 border-gray-800'}`}>
+            <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-full ${isBackupOld() ? 'bg-yellow-900/30 text-yellow-500' : 'bg-green-900/30 text-green-500'}`}>
+                    <Clock size={24} />
+                </div>
+                <div>
+                    <p className="text-xs text-gray-500 font-bold uppercase">Último Backup</p>
+                    <p className={`text-sm font-medium ${isBackupOld() ? 'text-yellow-400' : 'text-white'}`}>
+                        {formatLastBackup()}
+                    </p>
+                    {isBackupOld() && <p className="text-[10px] text-yellow-500 mt-1">Recomendado: Faça um backup agora.</p>}
+                </div>
             </div>
-            <div>
-                <p className="text-xs text-gray-500 font-bold uppercase">Último Backup</p>
-                <p className={`text-sm font-medium ${isBackupOld() ? 'text-yellow-400' : 'text-white'}`}>
-                    {formatLastBackup()}
-                </p>
-                {isBackupOld() && <p className="text-[10px] text-yellow-500 mt-1">Recomendado: Faça um backup agora.</p>}
+        </div>
+
+        {/* Monitor de Armazenamento */}
+        <div className="p-4 rounded-lg border bg-dark-900 border-gray-800">
+             <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 rounded-full bg-gray-800 text-gray-400">
+                    <HardDrive size={24} />
+                </div>
+                <div className="flex-1">
+                    <div className="flex justify-between text-xs font-bold uppercase mb-1">
+                        <span className="text-gray-500">Espaço Utilizado</span>
+                        <span className={storageUsage.percent > 80 ? 'text-red-500' : 'text-neon-400'}>{formatBytes(storageUsage.used)} / ~5 MB</span>
+                    </div>
+                    <div className="w-full bg-gray-800 rounded-full h-2">
+                        <div 
+                            className={`h-2 rounded-full transition-all duration-500 ${getStorageColor()}`} 
+                            style={{ width: `${Math.min(storageUsage.percent, 100)}%` }}
+                        ></div>
+                    </div>
+                </div>
             </div>
-         </div>
+            <p className="text-[10px] text-gray-600 pl-14">
+                Se a barra ficar vermelha, faça um backup e limpe clientes antigos para evitar travamentos.
+            </p>
+        </div>
       </div>
 
       {/* Restore Decision Modal */}

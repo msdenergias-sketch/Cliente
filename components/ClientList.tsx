@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Search, Edit2, Trash2, AlertTriangle, X } from 'lucide-react';
+import { Search, Edit2, Trash2, AlertTriangle, X, FileText, MessageCircle } from 'lucide-react';
 import { NeonInput } from './ui/Input';
 import { ClientData } from '../types';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 interface ClientListProps {
   clients: ClientData[];
@@ -24,6 +26,102 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
       onDelete(deleteConfirmId);
       setDeleteConfirmId(null);
     }
+  };
+
+  // --- WhatsApp Logic ---
+  const handleWhatsApp = (client: ClientData) => {
+      const nums = client.phone.replace(/\D/g, '');
+      if (!nums) {
+          alert("Telefone não cadastrado.");
+          return;
+      }
+      const message = `Olá ${client.fullName}, tudo bem? Sou da [Sua Empresa] e gostaria de falar sobre o projeto solar da unidade ${client.uc || ''}.`;
+      window.open(`https://wa.me/55${nums}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
+  // --- PDF Generator Logic ---
+  const handleGeneratePDF = (client: ClientData) => {
+      const doc = new jsPDF();
+      
+      // Header
+      doc.setFillColor(10, 10, 10); // Dark background
+      doc.rect(0, 0, 210, 30, 'F');
+      doc.setTextColor(74, 222, 128); // Neon Green
+      doc.setFontSize(22);
+      doc.text("Ficha Técnica do Projeto", 105, 20, { align: 'center' });
+      
+      // Status Badge
+      doc.setFontSize(10);
+      doc.setTextColor(255, 255, 255);
+      doc.text(`Status: ${client.projectStatus || 'N/A'}`, 180, 20, { align: 'right' });
+
+      // Section: Dados do Cliente
+      doc.setTextColor(0, 0, 0);
+      doc.setFontSize(14);
+      doc.text("Dados do Cliente", 14, 45);
+      doc.setLineWidth(0.5);
+      doc.line(14, 47, 196, 47);
+
+      autoTable(doc, {
+          startY: 50,
+          head: [['Campo', 'Informação']],
+          body: [
+              ['Nome', client.fullName],
+              ['Documento', `${client.docType}: ${client.docNumber}`],
+              ['Telefone', client.phone],
+              ['Email', client.email],
+              ['Endereço', `${client.street}, ${client.number} - ${client.city}/${client.state}`]
+          ],
+          theme: 'grid',
+          headStyles: { fillColor: [20, 83, 45] }, // Dark Green
+      });
+
+      // Section: Dados Técnicos
+      let finalY = (doc as any).lastAutoTable.finalY + 15;
+      doc.text("Dados Técnicos da Instalação", 14, finalY);
+      doc.line(14, finalY + 2, 196, finalY + 2);
+
+      autoTable(doc, {
+          startY: finalY + 5,
+          head: [['Item', 'Detalhe']],
+          body: [
+              ['Concessionária', client.concessionaire],
+              ['UC', client.uc],
+              ['Conexão', `${client.connectionType} / ${client.voltage}`],
+              ['Disjuntor', client.breaker],
+              ['Consumo Médio', `${client.avgConsumption} kWh`],
+              ['Potência Estimada', `${client.avgConsumption ? (parseFloat(client.avgConsumption)/101.25).toFixed(2) : '0'} kWp`]
+          ],
+          theme: 'grid',
+          headStyles: { fillColor: [20, 83, 45] },
+      });
+
+      // Section: Equipamentos e Financeiro
+      finalY = (doc as any).lastAutoTable.finalY + 15;
+      doc.text("Projeto & Financeiro", 14, finalY);
+      doc.line(14, finalY + 2, 196, finalY + 2);
+
+      autoTable(doc, {
+          startY: finalY + 5,
+          body: [
+              ['Equipamentos', client.equipmentList || 'Não especificado'],
+              ['Valor do Contrato', client.contractValue || 'R$ 0,00'],
+              ['Custo Estimado', client.projectCost || 'R$ 0,00'],
+              ['Data de Instalação', client.installDate ? new Date(client.installDate).toLocaleDateString('pt-BR') : 'A definir']
+          ],
+          theme: 'striped',
+      });
+
+      // Footer
+      const pageCount = (doc as any).internal.getNumberOfPages();
+      for(let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFontSize(8);
+          doc.setTextColor(150);
+          doc.text(`Gerado em ${new Date().toLocaleDateString()} pelo Sistema de Gestão`, 105, 290, { align: 'center' });
+      }
+
+      doc.save(`Projeto_${client.fullName.replace(/\s+/g, '_')}.pdf`);
   };
 
   return (
@@ -94,7 +192,14 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
               <tbody className="divide-y divide-gray-800 bg-dark-950">
                 {filteredClients.map((client) => (
                   <tr key={client.id} className="hover:bg-neon-900/10 transition-colors duration-200 group">
-                    <td className="px-4 py-3 text-gray-300 font-medium group-hover:text-white">{client.fullName}</td>
+                    <td className="px-4 py-3 text-gray-300 font-medium">
+                        <div className="flex flex-col">
+                            <span className="group-hover:text-white">{client.fullName}</span>
+                            {client.projectStatus && (
+                                <span className="text-[10px] text-gray-500 uppercase">{client.projectStatus}</span>
+                            )}
+                        </div>
+                    </td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold border shadow-sm ${
                         client.status === 'Ativo' ? 'border-green-800 text-green-400 bg-green-900/20' :
@@ -109,6 +214,20 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
                     <td className="px-4 py-3 text-gray-400">{client.phone}</td>
                     <td className="px-4 py-3 text-right">
                       <div className="flex justify-end gap-2">
+                        <button 
+                          onClick={() => handleWhatsApp(client)}
+                          className="p-1.5 rounded hover:bg-green-900/30 text-gray-400 hover:text-green-400 transition-colors"
+                          title="WhatsApp"
+                        >
+                          <MessageCircle size={16} />
+                        </button>
+                        <button 
+                          onClick={() => handleGeneratePDF(client)}
+                          className="p-1.5 rounded hover:bg-blue-900/30 text-gray-400 hover:text-blue-400 transition-colors"
+                          title="Gerar PDF"
+                        >
+                          <FileText size={16} />
+                        </button>
                         <button 
                           onClick={() => onEdit(client)}
                           className="p-1.5 rounded hover:bg-neon-900/30 text-gray-400 hover:text-neon-400 transition-colors group-edit"
