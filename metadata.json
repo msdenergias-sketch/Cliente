@@ -1,0 +1,7 @@
+{
+  "name": "Sistema de Gestão Neon",
+  "description": "A dark-themed, neon-styled client management system based on user design.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
