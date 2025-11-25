@@ -129,22 +129,22 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
       {/* Modal de Confirmação de Exclusão */}
       {deleteConfirmId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-dark-900 border border-red-900/50 p-6 rounded-lg shadow-[0_0_30px_rgba(239,68,68,0.2)] max-w-md w-full animate-fadeIn flex flex-col items-center text-center">
-            <AlertTriangle size={48} className="text-red-500 mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">Confirmar Exclusão</h3>
-            <p className="text-gray-400 mb-6">
+          <div className="bg-dark-900 border border-red-900/50 p-8 rounded-xl shadow-[0_0_30px_rgba(239,68,68,0.2)] max-w-lg w-full animate-fadeIn flex flex-col items-center text-center">
+            <AlertTriangle size={64} className="text-red-500 mb-6" />
+            <h3 className="text-2xl font-bold text-white mb-3">Confirmar Exclusão</h3>
+            <p className="text-gray-300 mb-8 text-base">
               Tem certeza que deseja excluir este cliente? Esta ação não pode ser desfeita e todos os dados serão perdidos.
             </p>
-            <div className="flex gap-3 w-full">
+            <div className="flex gap-4 w-full">
               <button 
                 onClick={() => setDeleteConfirmId(null)}
-                className="flex-1 py-2 rounded bg-dark-950 border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors font-bold"
+                className="flex-1 py-3 rounded-lg bg-dark-950 border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors font-bold text-base"
               >
                 Cancelar
               </button>
               <button 
                 onClick={handleDeleteConfirm}
-                className="flex-1 py-2 rounded bg-red-600 hover:bg-red-500 text-white font-bold shadow-lg transition-colors"
+                className="flex-1 py-3 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold shadow-lg transition-colors text-base"
               >
                 Sim, Excluir
               </button>
@@ -153,8 +153,8 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-3">
-        <h2 className="text-xl font-bold text-neon-400 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)]">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <h2 className="text-2xl font-black text-neon-400 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)]">
           Lista de Clientes
         </h2>
         <div className="w-full md:w-1/3">
@@ -168,40 +168,40 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
         </div>
       </div>
 
-      <div className="flex-1 overflow-hidden rounded-lg border border-gray-800 shadow-[0_0_15px_rgba(0,0,0,0.5)] flex flex-col">
+      <div className="flex-1 overflow-hidden rounded-xl border border-gray-800 shadow-[0_0_15px_rgba(0,0,0,0.5)] flex flex-col">
         {clients.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-gray-500 p-8">
-            <div className="w-16 h-16 rounded-full bg-dark-900 flex items-center justify-center mb-4 border border-gray-800">
-              <Search size={24} />
+          <div className="h-full flex flex-col items-center justify-center text-gray-500 p-10">
+            <div className="w-20 h-20 rounded-full bg-dark-900 flex items-center justify-center mb-6 border border-gray-800">
+              <Search size={32} />
             </div>
-            <p className="text-lg font-medium">Nenhum cliente cadastrado</p>
-            <p className="text-sm">Cadastre um novo cliente para vê-lo aqui.</p>
+            <p className="text-xl font-medium">Nenhum cliente cadastrado</p>
+            <p className="text-base mt-2">Cadastre um novo cliente para vê-lo aqui.</p>
           </div>
         ) : (
           <div className="overflow-x-auto overflow-y-auto custom-scrollbar h-full">
-            <table className="min-w-full text-left text-sm whitespace-nowrap">
-              <thead className="uppercase tracking-wider border-b border-gray-700 bg-dark-900/80 text-neon-400 backdrop-blur-sm sticky top-0 z-10">
+            <table className="min-w-full text-left text-base whitespace-nowrap">
+              <thead className="uppercase tracking-wider border-b border-gray-700 bg-dark-900/90 text-neon-400 backdrop-blur-sm sticky top-0 z-10 text-sm">
                 <tr>
-                  <th scope="col" className="px-4 py-3 font-bold">Nome</th>
-                  <th scope="col" className="px-4 py-3 font-bold">Status</th>
-                  <th scope="col" className="px-4 py-3 font-bold">Email</th>
-                  <th scope="col" className="px-4 py-3 font-bold">Telefone</th>
-                  <th scope="col" className="px-4 py-3 font-bold text-right">Ações</th>
+                  <th scope="col" className="px-6 py-4 font-bold">Nome</th>
+                  <th scope="col" className="px-6 py-4 font-bold">Status</th>
+                  <th scope="col" className="px-6 py-4 font-bold">Email</th>
+                  <th scope="col" className="px-6 py-4 font-bold">Telefone</th>
+                  <th scope="col" className="px-6 py-4 font-bold text-right">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800 bg-dark-950">
                 {filteredClients.map((client) => (
                   <tr key={client.id} className="hover:bg-neon-900/10 transition-colors duration-200 group">
-                    <td className="px-4 py-3 text-gray-300 font-medium">
+                    <td className="px-6 py-4 text-gray-200 font-medium text-base">
                         <div className="flex flex-col">
-                            <span className="group-hover:text-white">{client.fullName}</span>
+                            <span className="group-hover:text-white transition-colors">{client.fullName}</span>
                             {client.projectStatus && (
-                                <span className="text-[10px] text-gray-500 uppercase">{client.projectStatus}</span>
+                                <span className="text-xs text-gray-500 uppercase mt-0.5 tracking-wide font-semibold">{client.projectStatus}</span>
                             )}
                         </div>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold border shadow-sm ${
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded text-xs uppercase font-bold border shadow-sm tracking-wide ${
                         client.status === 'Ativo' ? 'border-green-800 text-green-400 bg-green-900/20' :
                         client.status === 'Pendente' ? 'border-yellow-800 text-yellow-400 bg-yellow-900/20' :
                         client.status === 'Inativo' ? 'border-red-800 text-red-400 bg-red-900/20' :
@@ -210,37 +210,37 @@ export const ClientList: React.FC<ClientListProps> = ({ clients, onEdit, onDelet
                         {client.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-400">{client.email}</td>
-                    <td className="px-4 py-3 text-gray-400">{client.phone}</td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex justify-end gap-2">
+                    <td className="px-6 py-4 text-gray-400 text-sm">{client.email}</td>
+                    <td className="px-6 py-4 text-gray-400 text-sm font-mono">{client.phone}</td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end gap-3">
                         <button 
                           onClick={() => handleWhatsApp(client)}
-                          className="p-1.5 rounded hover:bg-green-900/30 text-gray-400 hover:text-green-400 transition-colors"
+                          className="p-2 rounded-lg bg-gray-900 hover:bg-green-900/30 text-gray-400 hover:text-green-400 transition-colors"
                           title="WhatsApp"
                         >
-                          <MessageCircle size={16} />
+                          <MessageCircle size={18} />
                         </button>
                         <button 
                           onClick={() => handleGeneratePDF(client)}
-                          className="p-1.5 rounded hover:bg-blue-900/30 text-gray-400 hover:text-blue-400 transition-colors"
+                          className="p-2 rounded-lg bg-gray-900 hover:bg-blue-900/30 text-gray-400 hover:text-blue-400 transition-colors"
                           title="Gerar PDF"
                         >
-                          <FileText size={16} />
+                          <FileText size={18} />
                         </button>
                         <button 
                           onClick={() => onEdit(client)}
-                          className="p-1.5 rounded hover:bg-neon-900/30 text-gray-400 hover:text-neon-400 transition-colors group-edit"
+                          className="p-2 rounded-lg bg-gray-900 hover:bg-neon-900/30 text-gray-400 hover:text-neon-400 transition-colors group-edit"
                           title="Editar"
                         >
-                          <Edit2 size={16} />
+                          <Edit2 size={18} />
                         </button>
                         <button 
                           onClick={() => setDeleteConfirmId(client.id)}
-                          className="p-1.5 rounded hover:bg-red-900/30 text-gray-400 hover:text-red-500 transition-colors group-delete"
+                          className="p-2 rounded-lg bg-gray-900 hover:bg-red-900/30 text-gray-400 hover:text-red-500 transition-colors group-delete"
                           title="Excluir"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 size={18} />
                         </button>
                       </div>
                     </td>

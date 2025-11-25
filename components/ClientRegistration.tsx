@@ -5,7 +5,8 @@ import {
   User, Mail, Phone, FileText, Hash, CheckCircle, AlertCircle, 
   Search, Zap, Sun, Globe, Crosshair, Map as MapIcon, Loader2,
   Camera, Upload, File as FileIcon, X, MapPin, FileCheck, Eye, Download, ExternalLink, Save,
-  Briefcase, Calendar, DollarSign, PenTool, ClipboardList, Clock, Wrench, Award, ClipboardCheck
+  Briefcase, Calendar, DollarSign, PenTool, ClipboardList, Clock, Wrench, Award, ClipboardCheck,
+  TrendingUp, FileSignature, Cpu, Send, RefreshCw
 } from 'lucide-react';
 
 const steps: { id: FormStep; label: string; number: number }[] = [
@@ -40,9 +41,9 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({ file, onClose }) =>
       <div className="relative max-w-4xl max-h-[90vh] w-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
         <button 
           onClick={onClose}
-          className="absolute -top-10 right-0 text-gray-400 hover:text-white transition-colors"
+          className="absolute -top-12 right-0 text-gray-300 hover:text-white transition-colors"
         >
-          <X size={24} />
+          <X size={32} />
         </button>
         
         {file.type === 'image' && file.previewUrl ? (
@@ -52,23 +53,23 @@ const FilePreviewModal: React.FC<FilePreviewModalProps> = ({ file, onClose }) =>
             className="max-w-full max-h-[80vh] object-contain rounded-lg border border-neon-900 shadow-[0_0_30px_rgba(34,197,94,0.2)]"
           />
         ) : (
-          <div className="bg-dark-900 p-10 rounded-lg border border-neon-900 text-center">
-            <FileText size={64} className="text-neon-400 mx-auto mb-4" />
-            <p className="text-xl text-white mb-2">Visualização de PDF</p>
-            <p className="text-gray-400 mb-6">{file.file.name}</p>
+          <div className="bg-dark-900 p-12 rounded-lg border border-neon-900 text-center shadow-2xl">
+            <FileText size={80} className="text-neon-400 mx-auto mb-6" />
+            <p className="text-2xl text-white mb-2 font-bold">Visualização de PDF</p>
+            <p className="text-gray-400 mb-8 text-lg">{file.file.name}</p>
             <a 
               href={file.previewUrl!} 
               target="_blank" 
               rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-neon-500 hover:bg-neon-400 text-black font-bold py-2 px-6 rounded transition-all"
+              className="inline-flex items-center gap-2 bg-neon-500 hover:bg-neon-400 text-black font-bold py-3 px-8 rounded-lg text-lg transition-all"
             >
-              <ExternalLink size={18} /> Abrir em nova aba
+              <ExternalLink size={24} /> Abrir em nova aba
             </a>
           </div>
         )}
         
         <div className="mt-4 flex gap-4">
-           <p className="text-gray-300 font-medium">{file.file.name}</p>
+           <p className="text-gray-200 font-medium text-lg">{file.file.name}</p>
         </div>
       </div>
     </div>
@@ -95,39 +96,39 @@ const DocUploadCard: React.FC<DocUploadCardProps> = ({
   const camInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="bg-dark-900/50 border border-neon-900/50 rounded-lg p-4 flex flex-col h-full shadow-lg hover:border-neon-500/50 transition-colors animate-fadeIn">
-      <div className="flex items-center gap-2 mb-2 text-neon-400 font-bold text-sm">
-        <Icon size={16} /> {title}
+    <div className="bg-dark-900/50 border border-neon-900/50 rounded-xl p-5 flex flex-col h-full shadow-lg hover:border-neon-500/50 transition-colors animate-fadeIn">
+      <div className="flex items-center gap-3 mb-2 text-neon-400 font-bold text-base">
+        <Icon size={20} /> {title}
       </div>
-      <p className="text-xs text-gray-500 mb-4 h-8">{subtitle}</p>
+      <p className="text-sm text-gray-400 mb-4 h-10 leading-snug">{subtitle}</p>
       
-      <div className="grid grid-cols-2 gap-2 mb-4">
-          <button type="button" onClick={() => fileInputRef.current?.click()} className="flex flex-col items-center justify-center p-3 bg-dark-950 border border-gray-700 rounded hover:border-neon-500 hover:text-neon-400 transition-all group">
-            <Upload size={20} className="mb-1 text-gray-400 group-hover:text-neon-400" />
-            <span className="text-[10px] font-bold text-gray-400 group-hover:text-neon-400">Upload</span>
+      <div className="grid grid-cols-2 gap-3 mb-4">
+          <button type="button" onClick={() => fileInputRef.current?.click()} className="flex flex-col items-center justify-center p-4 bg-dark-950 border border-gray-700 rounded-lg hover:border-neon-500 hover:text-neon-400 transition-all group">
+            <Upload size={24} className="mb-2 text-gray-400 group-hover:text-neon-400" />
+            <span className="text-xs font-bold text-gray-400 group-hover:text-neon-400 uppercase tracking-wide">Upload</span>
           </button>
-          <button type="button" onClick={() => camInputRef.current?.click()} className="flex flex-col items-center justify-center p-3 bg-dark-950 border border-gray-700 rounded hover:border-neon-500 hover:text-neon-400 transition-all group">
-            <Camera size={20} className="mb-1 text-gray-400 group-hover:text-neon-400" />
-            <span className="text-[10px] font-bold text-gray-400 group-hover:text-neon-400">Câmera</span>
+          <button type="button" onClick={() => camInputRef.current?.click()} className="flex flex-col items-center justify-center p-4 bg-dark-950 border border-gray-700 rounded-lg hover:border-neon-500 hover:text-neon-400 transition-all group">
+            <Camera size={24} className="mb-2 text-gray-400 group-hover:text-neon-400" />
+            <span className="text-xs font-bold text-gray-400 group-hover:text-neon-400 uppercase tracking-wide">Câmera</span>
           </button>
           <input type="file" ref={fileInputRef} className="hidden" accept=".pdf,image/*" multiple onChange={(e) => onUpload(e.target.files)} />
           <input type="file" ref={camInputRef} className="hidden" accept="image/*" capture="environment" onChange={(e) => onUpload(e.target.files)} />
       </div>
 
-      <div className="flex-1 space-y-2 overflow-y-auto max-h-[150px] custom-scrollbar pr-1 min-h-[60px]">
+      <div className="flex-1 space-y-2 overflow-y-auto max-h-[180px] custom-scrollbar pr-1 min-h-[80px]">
         {files.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-gray-700 text-xs italic py-2 border border-dashed border-gray-800 rounded">Nenhum arquivo</div>
+          <div className="h-full flex flex-col items-center justify-center text-gray-600 text-sm italic py-4 border border-dashed border-gray-800 rounded-lg">Nenhum arquivo anexado</div>
         ) : (
           files.map((file) => (
-            <div key={file.id} className="flex items-center justify-between p-2 bg-dark-950 border border-gray-800 rounded group hover:border-gray-600 transition-colors">
-              <div className="flex items-center gap-2 overflow-hidden cursor-pointer" onClick={() => onPreview(file)}>
-                {file.type === 'image' && file.previewUrl ? <img src={file.previewUrl} alt="Preview" className="w-8 h-8 object-cover rounded border border-gray-700" /> : <div className="w-8 h-8 flex items-center justify-center bg-gray-800 rounded text-red-400"><FileIcon size={16} /></div>}
-                <span className="text-xs text-gray-300 truncate max-w-[80px] hover:text-neon-400 transition-colors" title={file.file.name}>{file.file.name}</span>
+            <div key={file.id} className="flex items-center justify-between p-3 bg-dark-950 border border-gray-800 rounded-lg group hover:border-gray-600 transition-colors">
+              <div className="flex items-center gap-3 overflow-hidden cursor-pointer" onClick={() => onPreview(file)}>
+                {file.type === 'image' && file.previewUrl ? <img src={file.previewUrl} alt="Preview" className="w-10 h-10 object-cover rounded border border-gray-700" /> : <div className="w-10 h-10 flex items-center justify-center bg-gray-800 rounded text-red-400"><FileIcon size={20} /></div>}
+                <span className="text-sm text-gray-300 truncate max-w-[120px] hover:text-neon-400 transition-colors font-medium" title={file.file.name}>{file.file.name}</span>
               </div>
-              <div className="flex items-center gap-1">
-                <button onClick={() => onPreview(file)} className="text-gray-500 hover:text-neon-400 transition-colors p-1" title="Visualizar"><Eye size={14} /></button>
-                <button onClick={() => onDownload(file)} className="text-gray-500 hover:text-blue-400 transition-colors p-1" title="Baixar"><Download size={14} /></button>
-                <button onClick={() => onRemove(file.id)} className="text-gray-500 hover:text-red-500 transition-colors p-1" title="Remover"><X size={14} /></button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => onPreview(file)} className="text-gray-500 hover:text-neon-400 transition-colors p-1.5 bg-gray-900 rounded-full" title="Visualizar"><Eye size={16} /></button>
+                <button onClick={() => onDownload(file)} className="text-gray-500 hover:text-blue-400 transition-colors p-1.5 bg-gray-900 rounded-full" title="Baixar"><Download size={16} /></button>
+                <button onClick={() => onRemove(file.id)} className="text-gray-500 hover:text-red-500 transition-colors p-1.5 bg-gray-900 rounded-full" title="Remover"><X size={16} /></button>
               </div>
             </div>
           ))
@@ -144,67 +145,95 @@ interface ProjectTimelineProps {
 }
 
 const ProjectTimeline: React.FC<ProjectTimelineProps> = ({ currentStatus, onStatusChange }) => {
+  // Enhanced Timeline for Solar Energy Workflow
   const timelineSteps = [
-    { id: 'Em Análise', label: 'Análise', icon: Search },
-    { id: 'Aprovado', label: 'Aprovado', icon: CheckCircle },
-    { id: 'Em Instalação', label: 'Instalação', icon: Wrench },
-    { id: 'Vistoria Solicitada', label: 'Vistoria', icon: ClipboardCheck },
-    { id: 'Finalizado', label: 'Finalizado', icon: Award },
+    { id: 'Contrato Assinado', label: 'Contrato', pct: 10, desc: 'Venda Fechada', icon: FileSignature },
+    { id: 'Engenharia', label: 'Engenharia', pct: 25, desc: 'Projeto', icon: Cpu },
+    { id: 'Protocolado', label: 'Protocolado', pct: 40, desc: 'Na Concessionária', icon: Send },
+    { id: 'Aprovado', label: 'Aprovado', pct: 55, desc: 'Parecer OK', icon: CheckCircle },
+    { id: 'Em Instalação', label: 'Instalação', pct: 75, desc: 'Execução', icon: Wrench },
+    { id: 'Vistoria Solicitada', label: 'Vistoria', pct: 85, desc: 'Solicitada', icon: ClipboardCheck },
+    { id: 'Troca de Medidor', label: 'Medidor', pct: 95, desc: 'Aguardando', icon: RefreshCw },
+    { id: 'Homologado', label: 'Homologado', pct: 100, desc: 'Finalizado', icon: Award },
   ];
 
-  const getCurrentIndex = () => {
-    const idx = timelineSteps.findIndex(s => s.id === currentStatus);
-    return idx === -1 ? 0 : idx;
-  };
-
-  const currentIndex = getCurrentIndex();
+  // Fallback if status doesn't match new list (e.g. old data)
+  const currentStepData = timelineSteps.find(s => s.id === currentStatus) || timelineSteps[0];
+  const currentIndex = timelineSteps.findIndex(s => s.id === currentStatus) !== -1 
+      ? timelineSteps.findIndex(s => s.id === currentStatus) 
+      : 0;
+  
+  const currentPct = currentStepData.pct;
 
   return (
-    <div className="w-full py-6 px-2 mb-6">
-      <div className="relative flex items-center justify-between">
-        {/* Background Line */}
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-800 rounded-full -z-10"></div>
-        
-        {/* Active Progress Line */}
-        <div 
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-neon-500 rounded-full -z-10 transition-all duration-500 ease-out shadow-neon"
-          style={{ width: `${(currentIndex / (timelineSteps.length - 1)) * 100}%` }}
-        ></div>
+    <div className="w-full py-4 mb-8 bg-dark-900/40 rounded-xl border border-neon-900/30 p-8 overflow-x-auto">
+      <div className="flex justify-between items-end mb-8 min-w-[700px]">
+          <div>
+              <h4 className="text-gray-400 text-sm font-bold uppercase tracking-widest mb-2">Progresso do Projeto</h4>
+              <p className="text-4xl font-black text-neon-400 drop-shadow-[0_0_12px_rgba(74,222,128,0.5)] flex items-center gap-3">
+                  {currentPct}% <span className="text-base font-normal text-gray-400">Concluído</span>
+              </p>
+          </div>
+          <div className="text-right">
+             <span className="text-sm text-gray-400 font-medium">Status Atual:</span>
+             <p className="text-white font-bold text-lg bg-neon-900/30 px-4 py-2 rounded-lg border border-neon-900/50 inline-block ml-3 shadow-lg">{currentStatus}</p>
+          </div>
+      </div>
 
-        {timelineSteps.map((step, index) => {
-          const Icon = step.icon;
-          const isCompleted = index <= currentIndex;
-          const isCurrent = index === currentIndex;
+      <div className="relative min-w-[700px] mt-4">
+        {/* Background Bar */}
+        <div className="h-4 w-full bg-gray-800 rounded-full overflow-hidden border border-gray-700">
+            <div 
+                className="h-full bg-gradient-to-r from-neon-900 via-neon-500 to-neon-400 transition-all duration-700 ease-out shadow-[0_0_20px_rgba(34,197,94,0.4)]"
+                style={{ width: `${currentPct}%` }}
+            ></div>
+        </div>
 
-          return (
-            <div key={step.id} className="flex flex-col items-center group cursor-pointer" onClick={() => onStatusChange(step.id)}>
-              <div 
-                className={`
-                  w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 relative
-                  ${isCurrent 
-                    ? 'bg-black border-neon-500 text-neon-500 shadow-neon scale-110' 
-                    : isCompleted 
-                      ? 'bg-neon-500 border-neon-500 text-black shadow-neon' 
-                      : 'bg-dark-900 border-gray-700 text-gray-600 hover:border-gray-500'}
-                `}
-              >
-                <Icon size={isCurrent ? 20 : 16} />
-                {isCurrent && (
-                  <span className="absolute w-full h-full rounded-full border border-neon-500 animate-ping opacity-75"></span>
-                )}
-              </div>
-              <span 
-                className={`
-                  mt-2 text-[10px] font-bold uppercase tracking-wider transition-colors duration-300
-                  ${isCompleted ? 'text-neon-400' : 'text-gray-600'}
-                  ${isCurrent ? 'scale-110' : ''}
-                `}
-              >
-                {step.label}
-              </span>
-            </div>
-          );
-        })}
+        {/* Steps Overlay */}
+        <div className="flex justify-between mt-8 relative">
+            {timelineSteps.map((step, index) => {
+                const Icon = step.icon;
+                const isPastOrCurrent = index <= currentIndex;
+                const isCurrent = index === currentIndex;
+                // REQUEST: Future steps should be "Vivid White"
+                const isFuture = index > currentIndex;
+
+                return (
+                    <div 
+                        key={step.id} 
+                        onClick={() => onStatusChange(step.id)}
+                        className={`flex flex-col items-center group cursor-pointer w-24 relative transition-all`}
+                    >
+                        {/* Connecting Line (Connector above dot) */}
+                        <div className={`absolute -top-[35px] w-0.5 h-4 ${isPastOrCurrent ? 'bg-neon-500' : 'bg-gray-600'}`}></div>
+
+                        {/* Dot Indicator on Bar */}
+                        <div className={`
+                            absolute -top-[44px] w-5 h-5 rounded-full border-2 transition-all duration-300
+                            ${isPastOrCurrent ? 'bg-neon-500 border-neon-400 shadow-[0_0_12px_rgba(34,197,94,0.8)] scale-110' : 'bg-dark-900 border-gray-500'}
+                        `}></div>
+
+                        <div 
+                            className={`
+                                flex items-center justify-center w-10 h-10 rounded-xl mb-2 transition-all duration-300
+                                ${isCurrent 
+                                    ? 'bg-neon-500 text-black scale-125 shadow-neon-strong z-10' 
+                                    : isPastOrCurrent 
+                                        ? 'bg-dark-950 border border-neon-500 text-neon-500' 
+                                        : 'bg-white/10 border border-white/40 text-white hover:bg-white/20' // Vivid White for Future
+                                }
+                            `}
+                        >
+                            <Icon size={isCurrent ? 20 : 18} />
+                        </div>
+                        <span className={`text-[11px] font-bold uppercase text-center leading-tight tracking-wide ${isFuture ? 'text-white drop-shadow-md' : isPastOrCurrent ? 'text-neon-400' : 'text-gray-500'}`}>
+                            {step.label}
+                        </span>
+                        <span className={`text-[10px] text-center mt-1 block font-medium ${isFuture ? 'text-gray-300' : 'text-gray-500'}`}>{step.desc}</span>
+                    </div>
+                );
+            })}
+        </div>
       </div>
     </div>
   );
@@ -260,7 +289,7 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
     utmEasting: '',
     utmNorthing: '',
     // Step 5 fields
-    projectStatus: 'Em Análise',
+    projectStatus: 'Contrato Assinado', // Default Updated
     installDate: '',
     equipmentList: '',
     contractValue: '',
@@ -841,31 +870,31 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
       {/* File Preview Modal */}
       {previewFile && <FilePreviewModal file={previewFile} onClose={() => setPreviewFile(null)} />}
 
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-        <h2 className="text-xl font-bold text-neon-400 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)] flex items-center gap-2">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <h2 className="text-2xl font-black text-neon-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)] flex items-center gap-3">
           {initialData ? 'Editar Cliente' : 'Cadastrar Novo Cliente'}
         </h2>
         {initialData && (
-          <button onClick={onCancel} className="text-gray-500 hover:text-white text-xs underline">
+          <button onClick={onCancel} className="text-gray-400 hover:text-white text-sm font-bold underline decoration-neon-500">
              Cancelar Edição
           </button>
         )}
       </div>
 
       {/* Steps Navigation */}
-      <div className="flex flex-wrap gap-2 mb-4 p-1">
+      <div className="flex flex-wrap gap-2 mb-6 p-1">
         {steps.map((step) => (
           <button
             key={step.id}
             onClick={() => setActiveStep(step.id)}
             className={`
-              flex items-center px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-300 border relative overflow-hidden group
+              flex items-center px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 border relative overflow-hidden group
               ${activeStep === step.id 
-                ? 'bg-neon-500 text-black border-neon-400 shadow-neon' 
-                : 'bg-transparent text-gray-400 border-gray-800 hover:border-neon-900 hover:text-neon-400'}
+                ? 'bg-neon-500 text-black border-neon-400 shadow-neon scale-105' 
+                : 'bg-transparent text-gray-400 border-gray-800 hover:border-neon-900 hover:text-neon-400 hover:bg-dark-900'}
             `}
           >
-            <span className={`mr-1.5 flex items-center justify-center w-4 h-4 rounded-full text-[10px] ${activeStep === step.id ? 'bg-black text-neon-500' : 'bg-gray-800'}`}>
+            <span className={`mr-2 flex items-center justify-center w-5 h-5 rounded-full text-xs ${activeStep === step.id ? 'bg-black text-neon-500' : 'bg-gray-800'}`}>
               {step.number}
             </span>
             {step.label}
@@ -874,23 +903,23 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
       </div>
 
       {/* Form Content */}
-      <div className="border-t border-neon-500/30 pt-4 flex-1 overflow-y-auto custom-scrollbar pr-2">
-        <h3 className="text-lg font-bold text-neon-400 mb-6 flex items-center gap-2">
+      <div className="border-t border-neon-500/30 pt-6 flex-1 overflow-y-auto custom-scrollbar pr-3">
+        <h3 className="text-xl font-bold text-neon-400 mb-8 flex items-center gap-3">
           {steps.find(s => s.id === activeStep)?.number}. {steps.find(s => s.id === activeStep)?.label}
         </h3>
 
         {/* STEP 1: PERSONAL DATA */}
         {activeStep === 'personal-data' && (
-          <form className="space-y-4">
+          <form className="space-y-6">
             <div className="w-full">
               <NeonInput label="Nome Completo" name="fullName" icon={User} placeholder="Digite o nome completo" value={formData.fullName} onChange={handleChange} error={errors.fullName} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <NeonSelect label="Status do Cliente" name="status" icon={CheckCircle} options={Object.values(ClientStatus)} value={formData.status} onChange={handleChange} />
               <NeonSelect label="Tipo de Documento" name="docType" icon={FileText} options={Object.values(DocType)} value={formData.docType} onChange={handleChange} />
                <NeonInput label="Número do Documento" name="docNumber" icon={Hash} placeholder={formData.docType === 'CPF' ? '000.000.000-00' : formData.docType === 'CNPJ' ? '00.000.000/0000-00' : 'Digite o número'} value={formData.docNumber} onChange={handleChange} disabled={!formData.docType} error={errors.docNumber} maxLength={formData.docType === 'CPF' ? 14 : formData.docType === 'CNPJ' ? 18 : 20} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <NeonInput label="E-mail" name="email" type="email" icon={Mail} placeholder="email@exemplo.com" value={formData.email} onChange={handleChange} error={errors.email} />
               <NeonInput label="Telefone" name="phone" type="tel" icon={Phone} placeholder="(00) 00000-0000" value={formData.phone} onChange={handleChange} maxLength={15} />
             </div>
@@ -902,83 +931,83 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
 
         {/* STEP 2: INSTALLATION */}
         {activeStep === 'installation' && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-                <div className="col-span-12 md:col-span-3 flex items-end gap-2">
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <div className="col-span-12 md:col-span-3 flex items-end gap-3">
                     <div className="flex-1"><NeonInput label="CEP" name="cep" placeholder="00000-000" value={formData.cep} onChange={handleChange} maxLength={9} /></div>
-                    <button type="button" onClick={() => performCepSearch(formData.cep)} disabled={loadingCep} className={`mb-0.5 bg-neon-500 hover:bg-neon-400 text-black font-bold h-[42px] w-[42px] rounded-lg shadow-neon transition-all flex items-center justify-center ${loadingCep ? 'opacity-70 cursor-wait' : ''}`} title="Buscar CEP">
-                        {loadingCep ? <Loader2 size={18} className="animate-spin" /> : <Search size={18} />} 
+                    <button type="button" onClick={() => performCepSearch(formData.cep)} disabled={loadingCep} className={`mb-0.5 bg-neon-500 hover:bg-neon-400 text-black font-bold h-[48px] w-[48px] rounded-lg shadow-neon transition-all flex items-center justify-center ${loadingCep ? 'opacity-70 cursor-wait' : ''}`} title="Buscar CEP">
+                        {loadingCep ? <Loader2 size={24} className="animate-spin" /> : <Search size={24} />} 
                     </button>
                 </div>
                 <div className="col-span-12 md:col-span-7"><NeonInput label="Endereço" name="street" placeholder="Nome da rua/avenida" value={formData.street} onChange={handleChange} /></div>
                 <div className="col-span-12 md:col-span-2"><NeonInput label="Número" name="number" placeholder="Nº" value={formData.number} onChange={handleChange} /></div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                  <div className="col-span-12 md:col-span-4"><NeonInput label="Bairro" name="neighborhood" placeholder="Bairro" value={formData.neighborhood} onChange={handleChange} /></div>
                  <div className="col-span-12 md:col-span-5"><NeonInput label="Cidade" name="city" placeholder="Cidade" value={formData.city} onChange={handleChange} /></div>
                  <div className="col-span-12 md:col-span-3"><NeonSelect label="Estado" name="state" options={['SP', 'RJ', 'MG', 'RS', 'PR', 'SC', 'ES', 'BA', 'PE', 'CE', 'GO', 'DF']} value={formData.state} onChange={handleChange} /></div>
             </div>
              <div className="w-full"><NeonInput label="Ponto de Referência (Opcional)" name="reference" placeholder="Ex: Próximo ao supermercado, em frente à praça..." value={formData.reference} onChange={handleChange} /></div>
-            <div className="h-px bg-gradient-to-r from-transparent via-neon-900 to-transparent my-6"></div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="h-px bg-gradient-to-r from-transparent via-neon-900 to-transparent my-8"></div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <NeonSelect label="Concessionária" name="concessionaire" options={concessionaireOptions} value={formData.concessionaire} onChange={handleChange} />
                  <NeonInput label="UC" name="uc" placeholder="Unidade Consumidora" value={formData.uc} onChange={handleChange} />
                  <NeonSelect label="Tipo de Instalação" name="installType" options={['Residencial', 'Comercial', 'Industrial', 'Rural']} value={formData.installType} onChange={handleChange} />
                  <NeonInput label="Cons. Med. Mensal (kWh)" name="avgConsumption" type="number" placeholder="0" value={formData.avgConsumption} onChange={handleChange} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                 <NeonSelect label="Conexão" name="connectionType" options={['Monofásico', 'Bifásico', 'Trifásico']} value={formData.connectionType} onChange={handleChange} />
                  <NeonSelect label="Tensão" name="voltage" options={['127V', '220V', '380V']} value={formData.voltage} onChange={handleChange} />
                  <NeonSelect label="Disjuntor" name="breaker" options={['40A', '50A', '63A', '80A', '100A', '125A', '150A']} value={formData.breaker} onChange={handleChange} />
                 <div className="flex flex-col">
-                    <label className="text-neon-400 text-xs font-bold mb-1.5 ml-1 flex items-center gap-1.5">Pot. Disp. (kW) <Zap size={12} className="text-yellow-400" /></label>
-                    <div className={`w-full bg-dark-900/50 text-sm rounded-lg py-2.5 px-3 border border-neon-900/30 cursor-not-allowed ${calculatedKw ? 'text-neon-400 font-bold' : 'text-gray-400'}`}>{calculatedKw ? `${calculatedKw} kW` : 'Auto-calculado'}</div>
+                    <label className="text-neon-400 text-sm font-bold mb-2 ml-1 flex items-center gap-1.5 tracking-wide">Pot. Disp. (kW) <Zap size={14} className="text-yellow-400" /></label>
+                    <div className={`w-full bg-dark-900/50 text-base rounded-lg py-3 px-4 border border-neon-900/30 cursor-not-allowed ${calculatedKw ? 'text-neon-400 font-bold' : 'text-gray-400'}`}>{calculatedKw ? `${calculatedKw} kW` : 'Auto-calculado'}</div>
                 </div>
                  <div className="flex flex-col">
-                    <label className="text-neon-400 text-xs font-bold mb-1.5 ml-1 flex items-center gap-1.5">Pot. Nesc. Inst. (kWp) <Sun size={12} className="text-yellow-400" /></label>
-                    <div className={`w-full bg-dark-900/50 text-sm rounded-lg py-2.5 px-3 border border-neon-900/30 cursor-not-allowed ${calculatedKwp ? 'text-neon-400 font-bold' : 'text-gray-400'}`}>{calculatedKwp ? `${calculatedKwp} kWp` : 'Auto-calculado'}</div>
+                    <label className="text-neon-400 text-sm font-bold mb-2 ml-1 flex items-center gap-1.5 tracking-wide">Pot. Nesc. Inst. (kWp) <Sun size={14} className="text-yellow-400" /></label>
+                    <div className={`w-full bg-dark-900/50 text-base rounded-lg py-3 px-4 border border-neon-900/30 cursor-not-allowed ${calculatedKwp ? 'text-neon-400 font-bold' : 'text-gray-400'}`}>{calculatedKwp ? `${calculatedKwp} kWp` : 'Auto-calculado'}</div>
                 </div>
             </div>
-            <div className="border border-neon-900/50 rounded-lg p-3 mt-4 bg-dark-900/20">
+            <div className="border border-neon-900/50 rounded-lg p-3 mt-6 bg-dark-900/20">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                    <div className="lg:col-span-9 h-[320px] bg-black border border-gray-800 rounded-lg relative overflow-hidden group">
+                    <div className="lg:col-span-9 h-[400px] bg-black border border-gray-800 rounded-lg relative overflow-hidden group">
                         {mapSrc ? (
                           <iframe width="100%" height="100%" frameBorder="0" scrolling="no" marginHeight={0} marginWidth={0} src={mapSrc} className="w-full h-full opacity-80 hover:opacity-100 transition-opacity duration-500" style={{ filter: 'invert(90%) hue-rotate(180deg) contrast(90%)' }}></iframe>
                         ) : (
-                          <div className="flex flex-col items-center justify-center h-full p-4 text-center">
+                          <div className="flex flex-col items-center justify-center h-full p-6 text-center">
                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-neon-900/20 to-transparent opacity-50"></div>
-                            <MapIcon size={48} className="text-neon-900 mb-2" /><span className="text-gray-500 text-sm font-medium z-10">Mapa Indisponível</span>
+                            <MapIcon size={64} className="text-neon-900 mb-4" /><span className="text-gray-500 text-base font-medium z-10">Mapa Indisponível</span>
                           </div>
                         )}
-                        {loadingCoords && <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-20 backdrop-blur-sm"><Loader2 className="text-neon-500 animate-spin" size={32} /></div>}
+                        {loadingCoords && <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-20 backdrop-blur-sm"><Loader2 className="text-neon-500 animate-spin" size={48} /></div>}
                     </div>
-                    <div className="lg:col-span-3 flex flex-col gap-3 h-[320px] overflow-y-auto custom-scrollbar pr-1">
+                    <div className="lg:col-span-3 flex flex-col gap-4 h-[400px] overflow-y-auto custom-scrollbar pr-2">
                          <div className="flex justify-between items-center pb-2 border-b border-gray-800 shrink-0">
-                             <h4 className="text-neon-400 font-bold flex items-center gap-2 text-xs"><MapPin size={14} /> Localização</h4>
-                             <button type="button" onClick={handleGetLocation} disabled={loadingCoords} className="text-[10px] bg-dark-950 border border-neon-900 text-neon-400 hover:bg-neon-900/30 px-2 py-1 rounded flex items-center gap-1 transition-colors">{loadingCoords ? <Loader2 size={10} className="animate-spin" /> : <Crosshair size={10} />} GPS</button>
+                             <h4 className="text-neon-400 font-bold flex items-center gap-2 text-sm uppercase"><MapPin size={16} /> Localização</h4>
+                             <button type="button" onClick={handleGetLocation} disabled={loadingCoords} className="text-xs bg-dark-950 border border-neon-900 text-neon-400 hover:bg-neon-900/30 px-3 py-1.5 rounded flex items-center gap-1 transition-colors font-bold uppercase tracking-wider">{loadingCoords ? <Loader2 size={12} className="animate-spin" /> : <Crosshair size={12} />} GPS</button>
                          </div>
                          <div className="flex flex-col gap-1">
-                            <label className="text-gray-400 text-[10px] font-bold flex items-center gap-1"><Globe size={10} className="text-blue-400"/> Latitude</label>
-                            <input type="text" name="latitude" value={formData.latitude} onChange={handleChange} placeholder="-00.000000" className="w-full bg-dark-950 border border-gray-800 rounded px-2 py-1.5 text-xs text-gray-200 focus:border-neon-500 outline-none" />
+                            <label className="text-gray-400 text-xs font-bold flex items-center gap-1"><Globe size={12} className="text-blue-400"/> Latitude</label>
+                            <input type="text" name="latitude" value={formData.latitude} onChange={handleChange} placeholder="-00.000000" className="w-full bg-dark-950 border border-gray-800 rounded px-3 py-2 text-sm text-gray-200 focus:border-neon-500 outline-none" />
                          </div>
                          <div className="flex flex-col gap-1">
-                            <label className="text-gray-400 text-[10px] font-bold flex items-center gap-1"><Globe size={10} className="text-blue-400"/> Longitude</label>
-                            <input type="text" name="longitude" value={formData.longitude} onChange={handleChange} placeholder="-00.000000" className="w-full bg-dark-950 border border-gray-800 rounded px-2 py-1.5 text-xs text-gray-200 focus:border-neon-500 outline-none" />
+                            <label className="text-gray-400 text-xs font-bold flex items-center gap-1"><Globe size={12} className="text-blue-400"/> Longitude</label>
+                            <input type="text" name="longitude" value={formData.longitude} onChange={handleChange} placeholder="-00.000000" className="w-full bg-dark-950 border border-gray-800 rounded px-3 py-2 text-sm text-gray-200 focus:border-neon-500 outline-none" />
                          </div>
-                        <div className="h-px bg-gray-800 my-1"></div>
-                        <div className="flex flex-col gap-2">
-                            <label className="text-neon-500 text-[10px] font-bold uppercase">Coordenadas UTM</label>
-                            <div className="flex flex-col gap-0.5">
-                                <label className="text-gray-500 text-[10px] font-bold">Zone:</label>
-                                <input readOnly value={formData.utmZone || ''} className="w-full bg-dark-900 border border-gray-700 rounded px-2 py-1.5 text-xs text-gray-200 focus:border-neon-500 outline-none shadow-inner" />
+                        <div className="h-px bg-gray-800 my-2"></div>
+                        <div className="flex flex-col gap-3">
+                            <label className="text-neon-500 text-xs font-bold uppercase tracking-widest">Coordenadas UTM</label>
+                            <div className="flex flex-col gap-1">
+                                <label className="text-gray-500 text-xs font-bold">Zone:</label>
+                                <input readOnly value={formData.utmZone || ''} className="w-full bg-dark-900 border border-gray-700 rounded px-3 py-2 text-sm text-gray-200 focus:border-neon-500 outline-none shadow-inner" />
                             </div>
-                            <div className="flex flex-col gap-0.5">
-                                <label className="text-gray-500 text-[10px] font-bold">Longitude UTM:</label>
-                                <input readOnly value={formData.utmEasting ? `${formData.utmEasting} m E` : ''} className="w-full bg-dark-900 border border-gray-700 rounded px-2 py-1.5 text-xs text-gray-200 focus:border-neon-500 outline-none shadow-inner" />
+                            <div className="flex flex-col gap-1">
+                                <label className="text-gray-500 text-xs font-bold">Longitude UTM:</label>
+                                <input readOnly value={formData.utmEasting ? `${formData.utmEasting} m E` : ''} className="w-full bg-dark-900 border border-gray-700 rounded px-3 py-2 text-sm text-gray-200 focus:border-neon-500 outline-none shadow-inner" />
                             </div>
-                            <div className="flex flex-col gap-0.5">
-                                <label className="text-gray-500 text-[10px] font-bold">Latitude UTM:</label>
-                                <input readOnly value={formData.utmNorthing ? `${formData.utmNorthing} m S` : ''} className="w-full bg-dark-900 border border-gray-700 rounded px-2 py-1.5 text-xs text-gray-200 focus:border-neon-500 outline-none shadow-inner" />
+                            <div className="flex flex-col gap-1">
+                                <label className="text-gray-500 text-xs font-bold">Latitude UTM:</label>
+                                <input readOnly value={formData.utmNorthing ? `${formData.utmNorthing} m S` : ''} className="w-full bg-dark-900 border border-gray-700 rounded px-3 py-2 text-sm text-gray-200 focus:border-neon-500 outline-none shadow-inner" />
                             </div>
                         </div>
                     </div>
@@ -989,8 +1018,8 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
 
         {/* STEP 3: INITIAL DOCS */}
         {activeStep === 'initial-docs' && (
-          <div className="space-y-6">
-            <p className="text-gray-400 text-sm mb-4">
+          <div className="space-y-8">
+            <p className="text-gray-400 text-base mb-4">
               Anexe fotos legíveis ou arquivos PDF dos documentos solicitados. Você pode tirar uma foto agora ou enviar da galeria.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1003,11 +1032,11 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
 
         {/* STEP 4: CONCESSIONAIRE DOCS */}
         {activeStep === 'concessionaire-docs' && (
-          <div className="space-y-6">
-            <p className="text-gray-400 text-sm mb-4">
+          <div className="space-y-8">
+            <p className="text-gray-400 text-base mb-4">
               Anexe os documentos técnicos e legais necessários para homologação junto à concessionária.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {concessionaireDocs.map((doc) => (
                 <DocUploadCard 
                   key={doc.id}
@@ -1028,52 +1057,61 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
 
         {/* STEP 5: PROJECTS (Updated) */}
         {activeStep === 'projects' && (
-          <div className="space-y-6 animate-fadeIn">
+          <div className="space-y-8 animate-fadeIn">
             {/* Project Timeline Component */}
             <ProjectTimeline 
-              currentStatus={formData.projectStatus || 'Em Análise'} 
+              currentStatus={formData.projectStatus || 'Contrato Assinado'} 
               onStatusChange={(newStatus) => setFormData(prev => ({ ...prev, projectStatus: newStatus }))} 
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <NeonSelect 
                 label="Status do Projeto" 
                 name="projectStatus" 
                 icon={Briefcase} 
-                options={['Em Análise', 'Aprovado', 'Em Instalação', 'Vistoria Solicitada', 'Finalizado']} 
+                options={[
+                  'Contrato Assinado',
+                  'Engenharia',
+                  'Protocolado',
+                  'Aprovado',
+                  'Em Instalação',
+                  'Vistoria Solicitada',
+                  'Troca de Medidor',
+                  'Homologado'
+                ]} 
                 value={formData.projectStatus || ''} 
                 onChange={handleChange} 
               />
               <div className="flex flex-col">
-                <label className="text-neon-400 text-xs font-bold mb-1.5 ml-1 flex items-center gap-1.5">
+                <label className="text-neon-400 text-sm font-bold mb-2 ml-1 flex items-center gap-1.5 tracking-wide">
                   Data de Instalação Prevista
                 </label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-neon-500 transition-colors">
-                    <Calendar size={16} />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-neon-500 transition-colors">
+                    <Calendar size={20} />
                   </div>
                   <input 
                     type="date"
                     name="installDate"
-                    className="w-full bg-dark-900 text-gray-200 text-sm rounded-lg py-2.5 pl-9 pr-3 border border-neon-900 focus:border-neon-500 focus:shadow-neon transition-all outline-none"
+                    className="w-full bg-dark-900 text-gray-100 text-base rounded-lg py-3 pl-10 pr-4 border border-neon-900 focus:border-neon-500 focus:shadow-neon transition-all outline-none"
                     value={formData.installDate || ''}
                     onChange={handleChange}
                   />
                 </div>
               </div>
               <div className="flex items-end">
-                <div className="bg-dark-900/30 border border-gray-800 rounded-lg p-3 w-full text-xs text-gray-400 italic">
+                <div className="bg-dark-900/30 border border-gray-800 rounded-lg p-3 w-full text-sm text-gray-400 italic">
                   * Preencha os valores abaixo para alimentar o Controle Financeiro.
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-4 rounded-lg border border-neon-900/30 bg-dark-900/20">
-                <h4 className="text-neon-400 font-bold mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
-                  <DollarSign size={16} /> Financeiro do Projeto
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-6 rounded-xl border border-neon-900/30 bg-dark-900/20">
+                <h4 className="text-neon-400 font-bold mb-6 flex items-center gap-2 text-base uppercase tracking-wider">
+                  <DollarSign size={20} /> Financeiro do Projeto
                 </h4>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <NeonInput 
                     label="Valor do Contrato (Receita)" 
                     name="contractValue" 
@@ -1094,9 +1132,9 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
                 </div>
               </div>
 
-              <div className="p-4 rounded-lg border border-neon-900/30 bg-dark-900/20">
-                <h4 className="text-neon-400 font-bold mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
-                   <PenTool size={16} /> Detalhes Técnicos
+              <div className="p-6 rounded-xl border border-neon-900/30 bg-dark-900/20">
+                <h4 className="text-neon-400 font-bold mb-6 flex items-center gap-2 text-base uppercase tracking-wider">
+                   <PenTool size={20} /> Detalhes Técnicos
                 </h4>
                 <NeonTextArea 
                   label="Lista de Equipamentos" 
@@ -1104,16 +1142,16 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
                   placeholder="Ex: 10x Módulos 550W, 1x Inversor 5kW..." 
                   value={formData.equipmentList || ''} 
                   onChange={handleChange} 
-                  className="h-32"
+                  className="h-40"
                 />
               </div>
             </div>
             
-            <div className="mt-4">
-               <div className="flex items-center gap-2 text-neon-400 font-bold text-sm mb-2">
-                 <ClipboardList size={16} /> Resumo do Projeto
+            <div className="mt-6">
+               <div className="flex items-center gap-2 text-neon-400 font-bold text-base mb-3">
+                 <ClipboardList size={20} /> Resumo do Projeto
                </div>
-               <div className="bg-black border border-gray-800 rounded-lg p-4 text-sm text-gray-400">
+               <div className="bg-black border border-gray-800 rounded-lg p-6 text-base text-gray-400">
                   <p>O projeto <span className="text-white font-bold">{formData.fullName || 'sem nome'}</span> está classificado como <span className="text-neon-500">{formData.installType || '-'}</span> com conexão <span className="text-neon-500">{formData.connectionType || '-'}</span>.</p>
                   <p className="mt-2">Potência estimada: <span className="text-white">{calculatedKwp ? `${calculatedKwp} kWp` : 'Não calculada'}</span>.</p>
                </div>
@@ -1123,18 +1161,18 @@ export const ClientRegistration: React.FC<ClientRegistrationProps> = ({ onSave, 
       </div>
 
        {/* Floating Action Button for Next */}
-       <div className="pt-4 border-t border-gray-800 mt-2 flex justify-end">
+       <div className="pt-6 border-t border-gray-800 mt-4 flex justify-end">
             <button 
                 type="button" 
                 onClick={handleNext}
                 disabled={isSaving}
                 className={`
-                  bg-neon-500 hover:bg-neon-400 text-black font-bold py-2 px-6 rounded shadow-neon transition-all hover:shadow-neon-strong transform hover:-translate-y-1 flex items-center gap-2 text-sm
+                  bg-neon-500 hover:bg-neon-400 text-black font-bold py-3 px-8 rounded-lg shadow-neon transition-all hover:shadow-neon-strong transform hover:-translate-y-1 flex items-center gap-3 text-base uppercase tracking-wide
                   ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}
                 `}
               >
                 {activeStep === 'projects' ? (initialData ? 'Atualizar Cliente' : 'Finalizar Cadastro') : 'Salvar e Avançar'}
-                {isSaving ? <Loader2 size={16} className="animate-spin" /> : (activeStep === 'projects' ? <Save size={16} /> : <CheckCircle size={16} />)}
+                {isSaving ? <Loader2 size={20} className="animate-spin" /> : (activeStep === 'projects' ? <Save size={20} /> : <CheckCircle size={20} />)}
             </button>
         </div>
     </div>

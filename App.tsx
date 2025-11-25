@@ -107,42 +107,42 @@ const App: React.FC = () => {
   };
 
   const navItems = [
-    { id: 'new-client' as Tab, label: clientToEdit ? 'Editando Cliente' : 'Novo Cliente', icon: <UserPlus size={16} /> },
-    { id: 'client-list' as Tab, label: 'Lista de Clientes', icon: <Users size={16} /> },
-    { id: 'financial' as Tab, label: 'Controle Financeiro', icon: <LayoutDashboard size={16} /> },
-    { id: 'settings' as Tab, label: 'Configurações', icon: <Settings size={16} />, alert: isBackupOutdated() },
+    { id: 'new-client' as Tab, label: clientToEdit ? 'Editando Cliente' : 'Novo Cliente', icon: <UserPlus size={20} /> },
+    { id: 'client-list' as Tab, label: 'Lista de Clientes', icon: <Users size={20} /> },
+    { id: 'financial' as Tab, label: 'Controle Financeiro', icon: <LayoutDashboard size={20} /> },
+    { id: 'settings' as Tab, label: 'Configurações', icon: <Settings size={20} />, alert: isBackupOutdated() },
   ];
 
   return (
     <div className="h-screen bg-black text-gray-200 font-sans selection:bg-neon-500 selection:text-black flex flex-col overflow-hidden">
       {/* Header Compacto */}
-      <header className="px-6 py-3 border-b border-gray-900 bg-black/95 flex flex-col md:flex-row justify-between items-center gap-4 z-10 shrink-0">
+      <header className="px-8 py-4 border-b border-gray-900 bg-black/95 flex flex-col md:flex-row justify-between items-center gap-6 z-10 shrink-0">
         <div className="flex flex-col items-center md:items-start">
-          <h1 className="text-2xl font-extrabold text-neon-500 tracking-tight drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]">
+          <h1 className="text-3xl font-extrabold text-neon-500 tracking-tight drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]">
             Sistema de Gestão
           </h1>
-          <p className="text-gray-400 text-xs">
+          <p className="text-gray-400 text-sm font-medium tracking-wide">
             Gerencie seus clientes e finanças
           </p>
         </div>
 
         {/* Navigation Compacta */}
-        <nav className="flex gap-2 overflow-x-auto max-w-full pb-1 md:pb-0 scrollbar-hide">
+        <nav className="flex gap-3 overflow-x-auto max-w-full pb-1 md:pb-0 scrollbar-hide">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleTabChange(item.id)}
               className={`
-                flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 whitespace-nowrap relative
+                flex items-center gap-2 px-5 py-3 rounded-xl text-base font-bold transition-all duration-300 whitespace-nowrap relative
                 ${activeTab === item.id 
-                  ? 'bg-gradient-to-r from-neon-500 to-neon-400 text-black shadow-neon ring-1 ring-neon-400' 
+                  ? 'bg-gradient-to-r from-neon-500 to-neon-400 text-black shadow-neon ring-1 ring-neon-400 scale-105' 
                   : 'bg-dark-900 text-gray-400 border border-gray-800 hover:border-neon-900 hover:text-white hover:bg-dark-800'}
               `}
             >
               {item.icon}
               {item.label}
               {item.alert && (
-                <span className="absolute top-0 right-0 -mt-1 -mr-1 w-3 h-3 bg-red-500 rounded-full animate-pulse border border-black" title="Backup necessário"></span>
+                <span className="absolute top-0 right-0 -mt-1 -mr-1 w-4 h-4 bg-red-500 rounded-full animate-pulse border-2 border-black" title="Backup necessário"></span>
               )}
             </button>
           ))}
@@ -150,8 +150,8 @@ const App: React.FC = () => {
       </header>
 
       {/* Main Content Area - Scrollable */}
-      <main className="flex-1 overflow-hidden p-4 relative">
-        <div className="bg-dark-950 rounded-xl border border-gray-900/50 w-full h-full overflow-y-auto custom-scrollbar p-2 md:p-4 shadow-inner">
+      <main className="flex-1 overflow-hidden p-6 relative">
+        <div className="bg-dark-950 rounded-2xl border border-gray-900/50 w-full h-full overflow-y-auto custom-scrollbar p-4 md:p-8 shadow-inner">
           {activeTab === 'new-client' && (
             <ClientRegistration 
               onSave={handleSaveClient} 
@@ -193,10 +193,10 @@ const App: React.FC = () => {
       </main>
       
       {/* Footer Compacto */}
-      <footer className="shrink-0 bg-dark-900 border-t border-gray-800 py-1.5 px-4 text-[10px] text-gray-600 flex justify-between items-center z-10">
+      <footer className="shrink-0 bg-dark-900 border-t border-gray-800 py-2 px-6 text-xs text-gray-500 flex justify-between items-center z-10 font-medium">
         <span>Sistema v1.0.1</span>
-        <span className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-neon-500 animate-pulse"></span>
+        <span className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-neon-500 animate-pulse"></span>
           Online
         </span>
       </footer>

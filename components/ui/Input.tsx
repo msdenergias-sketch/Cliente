@@ -11,20 +11,20 @@ export const NeonInput: React.FC<InputProps> = ({ label, icon: Icon, error, clas
   return (
     <div className={`flex flex-col ${className}`}>
       {label && (
-        <label className="text-neon-400 text-xs font-bold mb-1.5 ml-1 flex items-center gap-1.5">
+        <label className="text-neon-400 text-sm font-bold mb-2 ml-1 flex items-center gap-1.5 tracking-wide">
           {label}
         </label>
       )}
       <div className="relative group">
         {Icon && (
-          <div className={`absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none transition-colors duration-300 ${error ? 'text-red-400' : 'text-gray-500 group-focus-within:text-neon-500'}`}>
-            <Icon size={16} />
+          <div className={`absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none transition-colors duration-300 ${error ? 'text-red-400' : 'text-gray-400 group-focus-within:text-neon-500'}`}>
+            <Icon size={20} />
           </div>
         )}
         <input
           className={`
-            w-full bg-dark-900 text-gray-200 text-sm rounded-lg py-2.5 
-            ${Icon ? 'pl-9 pr-3' : 'px-3'} 
+            w-full bg-dark-900 text-gray-100 text-base rounded-lg py-3 
+            ${Icon ? 'pl-10 pr-4' : 'px-4'} 
             border transition-all duration-300 outline-none
             placeholder-gray-600
             ${error 
@@ -37,7 +37,7 @@ export const NeonInput: React.FC<InputProps> = ({ label, icon: Icon, error, clas
         />
       </div>
       {error && (
-        <span className="text-red-400 text-[10px] mt-0.5 ml-1 animate-fadeIn">{error}</span>
+        <span className="text-red-400 text-xs mt-1 ml-1 animate-fadeIn font-medium">{error}</span>
       )}
     </div>
   );
@@ -52,19 +52,19 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 export const NeonSelect: React.FC<SelectProps> = ({ label, options, icon: Icon, className, ...props }) => {
   return (
     <div className={`flex flex-col ${className}`}>
-      <label className="text-neon-400 text-xs font-bold mb-1.5 ml-1 flex items-center gap-1.5">
+      <label className="text-neon-400 text-sm font-bold mb-2 ml-1 flex items-center gap-1.5 tracking-wide">
         {label}
       </label>
       <div className="relative group">
         {Icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500 group-focus-within:text-neon-500 transition-colors duration-300">
-            <Icon size={16} />
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-neon-500 transition-colors duration-300">
+            <Icon size={20} />
           </div>
         )}
         <select
           className={`
-            w-full bg-dark-900 text-gray-200 text-sm rounded-lg py-2.5 
-            ${Icon ? 'pl-9 pr-9' : 'px-3'} 
+            w-full bg-dark-900 text-gray-100 text-base rounded-lg py-3 
+            ${Icon ? 'pl-10 pr-10' : 'px-4'} 
             border border-neon-900 focus:border-neon-500 focus:shadow-neon 
             transition-all duration-300 outline-none appearance-none cursor-pointer
           `}
@@ -75,8 +75,8 @@ export const NeonSelect: React.FC<SelectProps> = ({ label, options, icon: Icon, 
             <option key={opt} value={opt}>{opt}</option>
           ))}
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-neon-500">
-          <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-neon-500">
+          <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
             <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
           </svg>
         </div>
@@ -88,11 +88,11 @@ export const NeonSelect: React.FC<SelectProps> = ({ label, options, icon: Icon, 
 export const NeonTextArea: React.FC<React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string }> = ({ label, className, ...props }) => {
   return (
     <div className={`flex flex-col ${className}`}>
-      <label className="text-neon-400 text-xs font-bold mb-1.5 ml-1">
+      <label className="text-neon-400 text-sm font-bold mb-2 ml-1 tracking-wide">
         {label}
       </label>
       <textarea
-        className="bg-dark-900 border border-neon-900 text-gray-200 text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:border-neon-500 focus:shadow-neon transition-all duration-300 placeholder-gray-600 resize-none h-24"
+        className="bg-dark-900 border border-neon-900 text-gray-100 text-base rounded-lg px-4 py-3 focus:outline-none focus:border-neon-500 focus:shadow-neon transition-all duration-300 placeholder-gray-600 resize-none h-32"
         {...props}
       />
     </div>

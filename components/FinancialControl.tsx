@@ -140,73 +140,73 @@ export const FinancialControl: React.FC<FinancialControlProps> = ({
 
   return (
     <div className="h-full flex flex-col animate-fadeIn overflow-y-auto custom-scrollbar pr-1">
-      <h2 className="text-xl font-bold text-neon-400 mb-4 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)] flex items-center gap-2">
+      <h2 className="text-2xl font-black text-neon-400 mb-6 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)] flex items-center gap-3">
         Controle Financeiro Integrado
       </h2>
 
       {/* Cards de Totais */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-dark-900 border border-neon-900/50 p-4 rounded-lg shadow-lg relative group overflow-hidden">
-          <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-            <TrendingUp size={48} className="text-neon-500"/>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-dark-900 border border-neon-900/50 p-6 rounded-xl shadow-lg relative group overflow-hidden">
+          <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <TrendingUp size={64} className="text-neon-500"/>
           </div>
-          <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+          <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider flex items-center gap-1">
              Receita Total
           </h3>
-          <p className="text-2xl font-bold text-neon-400 mt-1">{formatCurrency(totals.revenue)}</p>
+          <p className="text-4xl font-black text-neon-400 mt-2">{formatCurrency(totals.revenue)}</p>
         </div>
 
-        <div className="bg-dark-900 border border-neon-900/50 p-4 rounded-lg shadow-lg relative group overflow-hidden">
-          <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-            <TrendingDown size={48} className="text-red-500"/>
+        <div className="bg-dark-900 border border-neon-900/50 p-6 rounded-xl shadow-lg relative group overflow-hidden">
+          <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <TrendingDown size={64} className="text-red-500"/>
           </div>
-          <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider">Despesas Totais</h3>
-          <p className="text-2xl font-bold text-red-400 mt-1">{formatCurrency(totals.expenses)}</p>
+          <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider">Despesas Totais</h3>
+          <p className="text-4xl font-black text-red-400 mt-2">{formatCurrency(totals.expenses)}</p>
         </div>
 
-        <div className="bg-dark-900 border border-neon-900/50 p-4 rounded-lg shadow-lg relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-full h-0.5 bg-neon-500 shadow-neon"></div>
-           <div className="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Wallet size={48} className="text-white"/>
+        <div className="bg-dark-900 border border-neon-900/50 p-6 rounded-xl shadow-lg relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-full h-1 bg-neon-500 shadow-neon"></div>
+           <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <Wallet size={64} className="text-white"/>
           </div>
-          <h3 className="text-gray-400 text-xs font-bold uppercase tracking-wider">Lucro Líquido</h3>
-          <p className={`text-2xl font-bold mt-1 ${totals.profit >= 0 ? 'text-white' : 'text-red-500'}`}>
+          <h3 className="text-gray-400 text-sm font-bold uppercase tracking-wider">Lucro Líquido</h3>
+          <p className={`text-4xl font-black mt-2 ${totals.profit >= 0 ? 'text-white' : 'text-red-500'}`}>
             {formatCurrency(totals.profit)}
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Gráfico */}
-          <div className="lg:col-span-2 bg-dark-900 border border-gray-800 p-4 rounded-lg min-h-[300px] flex flex-col">
-            <h3 className="text-base font-bold text-gray-300 mb-4 flex items-center gap-2">
-              <DollarSign size={16} className="text-neon-400"/> Fluxo de Caixa (Mensal)
+          <div className="lg:col-span-2 bg-dark-900 border border-gray-800 p-6 rounded-xl min-h-[350px] flex flex-col">
+            <h3 className="text-lg font-bold text-gray-300 mb-6 flex items-center gap-2">
+              <DollarSign size={20} className="text-neon-400"/> Fluxo de Caixa (Mensal)
             </h3>
             <div className="flex-1 w-full min-h-[250px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
-                    <XAxis dataKey="name" stroke="#666" fontSize={12} tickLine={false} axisLine={false} />
-                    <YAxis stroke="#666" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `R$${value/1000}k`} />
+                    <XAxis dataKey="name" stroke="#888" fontSize={14} tickLine={false} axisLine={false} />
+                    <YAxis stroke="#888" fontSize={14} tickLine={false} axisLine={false} tickFormatter={(value) => `R$${value/1000}k`} />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#111', borderColor: '#333', color: '#fff', fontSize: '12px', borderRadius: '8px' }} 
+                      contentStyle={{ backgroundColor: '#111', borderColor: '#333', color: '#fff', fontSize: '14px', borderRadius: '8px', padding: '10px' }} 
                       itemStyle={{ color: '#fff' }}
                       formatter={(value: number) => formatCurrency(value)}
                       cursor={{fill: 'rgba(255,255,255,0.05)'}}
                     />
-                    <Bar dataKey="receita" name="Receita" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={50} />
-                    <Bar dataKey="despesa" name="Despesa" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                    <Bar dataKey="receita" name="Receita" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
+                    <Bar dataKey="despesa" name="Despesa" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60} />
                   </BarChart>
                 </ResponsiveContainer>
             </div>
           </div>
 
           {/* Nova Movimentação Avulsa */}
-          <div className="bg-dark-900 border border-gray-800 p-4 rounded-lg flex flex-col">
-             <h3 className="text-base font-bold text-neon-400 mb-4 flex items-center gap-2">
-               <PlusCircle size={16} /> Registrar Movimentação
+          <div className="bg-dark-900 border border-gray-800 p-6 rounded-xl flex flex-col">
+             <h3 className="text-lg font-bold text-neon-400 mb-6 flex items-center gap-2">
+               <PlusCircle size={20} /> Registrar Movimentação
              </h3>
-             <form onSubmit={handleSubmitTransaction} className="flex flex-col gap-3 flex-1">
+             <form onSubmit={handleSubmitTransaction} className="flex flex-col gap-4 flex-1">
                  <NeonInput 
                     label="Descrição" name="description" placeholder="Ex: Combustível, Uber..." 
                     icon={FileText} value={newTrans.description} onChange={handleTransChange} required
@@ -229,45 +229,45 @@ export const FinancialControl: React.FC<FinancialControlProps> = ({
                     label="Categoria (Opcional)" name="category" placeholder="Ex: Transporte" 
                     icon={Tag} value={newTrans.category} onChange={handleTransChange}
                  />
-                 <button type="submit" className="mt-auto bg-neon-900/30 hover:bg-neon-500 hover:text-black text-neon-400 border border-neon-500 py-2 rounded font-bold transition-all shadow-neon flex justify-center items-center gap-2">
-                    <PlusCircle size={16} /> Adicionar
+                 <button type="submit" className="mt-auto bg-neon-900/30 hover:bg-neon-500 hover:text-black text-neon-400 border border-neon-500 py-3 rounded-lg font-bold transition-all shadow-neon flex justify-center items-center gap-2 text-base">
+                    <PlusCircle size={18} /> Adicionar
                  </button>
              </form>
           </div>
       </div>
 
       {/* Histórico de Transações Avulsas */}
-      <div className="bg-dark-900 border border-gray-800 p-4 rounded-lg">
-         <h3 className="text-base font-bold text-gray-300 mb-4 flex items-center gap-2">
-            <FileText size={16} className="text-neon-400"/> Histórico de Movimentações Avulsas
+      <div className="bg-dark-900 border border-gray-800 p-6 rounded-xl">
+         <h3 className="text-lg font-bold text-gray-300 mb-6 flex items-center gap-2">
+            <FileText size={20} className="text-neon-400"/> Histórico de Movimentações Avulsas
          </h3>
          <div className="overflow-x-auto">
-            <table className="min-w-full text-left text-sm">
-               <thead className="text-xs uppercase text-gray-500 border-b border-gray-800">
+            <table className="min-w-full text-left text-base">
+               <thead className="text-sm uppercase text-gray-500 border-b border-gray-800 font-bold">
                   <tr>
-                     <th className="px-4 py-2">Data</th>
-                     <th className="px-4 py-2">Descrição</th>
-                     <th className="px-4 py-2">Categoria</th>
-                     <th className="px-4 py-2 text-right">Valor</th>
-                     <th className="px-4 py-2 text-center">Ações</th>
+                     <th className="px-6 py-4">Data</th>
+                     <th className="px-6 py-4">Descrição</th>
+                     <th className="px-6 py-4">Categoria</th>
+                     <th className="px-6 py-4 text-right">Valor</th>
+                     <th className="px-6 py-4 text-center">Ações</th>
                   </tr>
                </thead>
                <tbody className="divide-y divide-gray-800">
                   {transactions.length === 0 ? (
-                      <tr><td colSpan={5} className="text-center py-4 text-gray-600 italic">Nenhuma movimentação avulsa registrada.</td></tr>
+                      <tr><td colSpan={5} className="text-center py-8 text-gray-600 italic text-base">Nenhuma movimentação avulsa registrada.</td></tr>
                   ) : (
                       transactions.map(t => (
                           <tr key={t.id} className="hover:bg-gray-800/30 transition-colors">
-                              <td className="px-4 py-2 text-gray-300">{new Date(t.date + 'T12:00:00').toLocaleDateString('pt-BR')}</td>
-                              <td className="px-4 py-2 text-white font-medium">{t.description}</td>
-                              <td className="px-4 py-2 text-gray-400 text-xs">{t.category || '-'}</td>
-                              <td className={`px-4 py-2 text-right font-bold ${t.type === 'income' ? 'text-green-400' : 'text-red-400'}`}>
+                              <td className="px-6 py-4 text-gray-300">{new Date(t.date + 'T12:00:00').toLocaleDateString('pt-BR')}</td>
+                              <td className="px-6 py-4 text-white font-medium">{t.description}</td>
+                              <td className="px-6 py-4 text-gray-400 text-sm">{t.category || '-'}</td>
+                              <td className={`px-6 py-4 text-right font-bold text-lg ${t.type === 'income' ? 'text-green-400' : 'text-red-400'}`}>
                                   {t.type === 'income' ? '+' : '-'} {t.amount}
                               </td>
-                              <td className="px-4 py-2 text-center">
+                              <td className="px-6 py-4 text-center">
                                   {onDeleteTransaction && (
-                                    <button onClick={() => onDeleteTransaction(t.id)} className="text-gray-500 hover:text-red-500 transition-colors" title="Excluir">
-                                        <Trash2 size={14} />
+                                    <button onClick={() => onDeleteTransaction(t.id)} className="text-gray-500 hover:text-red-500 transition-colors p-2 bg-gray-950 rounded-lg" title="Excluir">
+                                        <Trash2 size={18} />
                                     </button>
                                   )}
                               </td>
